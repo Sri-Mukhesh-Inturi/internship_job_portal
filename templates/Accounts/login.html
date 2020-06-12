@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+    {% block title %}Login {% endblock %}
+    {% block content %}
+{% if messages %}
+<div class="center-align">
+	{% for message in messages %}
+        <h5>{{ message }}</h5>
+	{% endfor %}
+</div>
+{% endif %}
+{% if login_form.errors %}
+    {% for field in login_form %}
+        {% for error in field.errors %}
+              <div class="center-align">
+                <h5>{{error|escape}}<h5>
+              </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in login_form.non_field_errors %}
+    <div class="center-align">
+      <h5>{{error|escape}}<h5>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<div class=" login_form row container center-align" style="margin:auto;">
+<form class=" col s12 offset-s4" method="POST" name="login_form" enctype="multipart/form-data" action="{% url 'Accounts:user_login' %}">
+    {% csrf_token %}
+      <div class="row">
+              <div class="input-field col s8 m4 ">
+                  <label for="id_user_name_or_num">Username or phone number</label>
+                {{login_form.user_name_or_num}}
+              </div>
+      </div>
+      <div class="row">
+              <div class="input-field col s8 m4 ">
+                  <label for="id_password">Password</label>
+                {{login_form.password}}
+              </div>
+      </div>
+    <div class="row">
+        <div class="input-field col s4">
+            <button class="btn waves-effect waves-light" type="submit" name="submit">Login</button>
+        </div>
+    </div>
+</form>
+</div>
+{% endblock %}

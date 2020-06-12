@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+
+
+<!--    this is to include materialize css through CDN-->
+     <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+     <script src="{% static 'javascript/script.js' %}"></script>
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<!--    navbar starts here-->
+  <div class="navbar-fixed">
+    <nav>
+    <div class="nav-wrapper">
+      <a href="/" class="brand-logo">Find My Job</a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+          {% if request.user.is_authenticated %}
+        <li><a href="#!">Profile</a></li>
+        <li><a href="{% url 'Accounts:user_logout' %}">Logout</a></li>
+          {% else %}
+        <li><a href="{% url 'Accounts:user_login' %}">Login</a></li>
+        <li><a href="{% url 'Accounts:register' %}">Register</a></li>
+          {% endif %}
+      </ul>
+    </div>
+    </nav>
+  </div>
+  <ul class="sidenav" id="mobile-demo">
+          {% if request.user.is_authenticated %}
+        <li><a href="#!">Profile</a></li>
+        <li><a href="{% url 'Accounts:user_logout' %}">Logout</a></li>
+          {% else %}
+        <li><a href="{% url 'Accounts:user_login' %}">Login</a></li>
+        <li><a href="{% url 'Accounts:register' %}">Register</a></li>
+          {% endif %}
+  </ul>
+<!--    navbar ends here-->
+        <div class="content">
+        {% block content %}
+        {% endblock %}
+        </div>
+<!--footer starts-->
+    <div class="footer">
+        <footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Find My Job</h5>
+                <p class="grey-text text-lighten-4">The perfect place to find your dream job or hire candidates</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Social Media Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">LinkedIn</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Facebook</a></li>
+                   <li><a class="grey-text text-lighten-3" href="#!">Instagram</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Gmail</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2014 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">Developed by Mukhesh Inturi</a>
+            </div>
+          </div>
+        </footer>
+    </div>
+</body>
+</html>

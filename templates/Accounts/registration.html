@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Register {% endblock %}
+    {% block content %}
+{% if user_form.errors %}
+    {% for field in user_form %}
+        {% for error in field.errors %}
+              <div class="center-align">
+                <h5>{{error|escape}}<h5>
+              </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in user_form.non_field_errors %}
+    <div class="center-align">
+      <h5>{{error|escape}}<h5>
+    </div>
+    {% endfor %}
+{% endif %}
+ {% if registered %}
+      <div class="center-align">
+        <h3>Your account has been activated</h3>
+        <p>
+          <span>  <a  href="{% url 'Accounts:user_login' %}">Click Here</a>to Login
+          </span>
+
+        </p>
+
+      </div>
+   {% else %}
+    <div class=" row container center-align" style="margin-top:2rem;">
+        <form class="col s12 offset-s2" method="POST" name="user_form" enctype="multipart/form-data" action="{% url 'Accounts:register' %}">
+            {% csrf_token %}
+            <div class="row">
+              <div class="input-field col s8 m4 ">
+                   <label for="id_user_type_name_0">
+                        <input class="with-gap" style="display:none" type="radio" name="user_type_name" value="employer" required="" id="id_user_type_name_0">
+                       <span>I'm An Employer</span>
+                   </label>
+              </div>
+              <div class="input-field col s8 m4 ">
+                  <label for="id_user_type_name_1">
+                       <input style="display:none" class="with-gap" type="radio" name="user_type_name" value="jobseeker" required="" id="id_user_type_name_1">
+                        <span>I'm Looking for a Job</span>
+                  </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s8 m4 ">
+                  <label for="id_username">UserName</label>
+                {{user_form.username}}
+              </div>
+              <div class="input-field col s8 m4 ">
+                  <label for="id_first_name">First Name</label>
+                {{user_form.first_name}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s8 m4 ">
+                  <label for="id_last_name">Last Name</label>
+                {{user_form.last_name}}
+              </div>
+               <div class="input-field col s8 m4 ">
+                  <label for="id_email">Email Address</label>
+                {{user_form.email}}
+              </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s8 m4 ">
+                  <label for="id_password">Password</label>
+                {{user_form.password}}
+              </div>
+               <div class="input-field col s8 m4 ">
+                  <label for="id_retype_password">Retype Password</label>
+                {{user_form.retype_password}}
+              </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s8 m4">
+              <label class="city-column" for="id_current_city"><span>Current City</span> {{user_form.current_city}}</label>
+
+              </div>
+                <div class="input-field col s8 m4 ">
+                  <label for="id_phone_number">Phone Number</label>
+                {{user_form.phone_number}}
+              </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s4 offset-s1">
+                    <button class="btn waves-effect waves-light" type="submit" name="submit">Sign Up</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+   {% endif %}
+{% endblock %}
