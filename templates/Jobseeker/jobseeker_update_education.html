@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Educational Details {% endblock %}
+{% block content %}
+      {% if messages %}
+   <div class="center-align">
+       {% for message in messages %}
+           <h5>{{ message }}</h5>
+       {% endfor %}
+   </div>
+   {% endif %}
+   {% if education_form.errors %}
+       {% for field in education_form %}
+           {% for error in field.errors %}
+                 <div class="center-align">
+                   <h5>{{error|escape}}<h5>
+                 </div>
+           {% endfor %}
+       {% endfor %}
+       {% for error in education_form.non_field_errors %}
+       <div class="center-align">
+         <h5>{{error|escape}}<h5>
+       </div>
+       {% endfor %}
+   {% endif %}
+
+   <div class=" row container center-align" style="margin:auto;">
+   <form class="basic_form col s12 offset-s4" method="POST" name="education_form" enctype="multipart/form-data" action="{% url 'Jobseeker:jobseeker_update_education' %}">
+       {% csrf_token %}
+
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_degree_type"><span>Degree Type</span>{{education_form.degree_type}}</label>
+                 </div>
+         </div>
+          <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_degree_name"><span>Select Course</span>{{education_form.degree_name}}</label>
+                 </div>
+         </div>
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label  for="id_institute"><span>Institute</span>  {{education_form.institute}}</label>
+                 </div>
+         </div>
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_start_date"><span>Start Date</span> {{education_form.start_date}}</label>
+
+                 </div>
+         </div>
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_end_date"><span>End Date</span>{{education_form.end_date}}</label>
+
+                 </div>
+         </div>
+          <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label  for="id_cgpa"><span>CGPA (scale of 10)</span> {{education_form.cgpa}}</label>
+                 </div>
+         </div>
+       <div class="row">
+           <div class="input-field col s4">
+               <button class="btn waves-effect waves-light" type="submit" name="submit">Submit</button>
+           </div>
+       </div>
+   </form>
+   </div>
+
+
+{% endblock %}

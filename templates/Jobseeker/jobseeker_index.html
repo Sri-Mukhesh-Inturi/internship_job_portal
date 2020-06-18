@@ -2,5 +2,9 @@
 {% load static %}
 {% block title %} Home {% endblock %}
 {% block content %}
-   <div> <h3 class="center-align">Personalised Home Page for {{request.user.first_name}} and he is looking for a job</h3></div>
+   <div> <h3 class="center-align flow-text">Personalised Home Page for {{request.user.first_name}} and he is {{user_type.user_type_name}}</h3>
+
+
+   </div>
+
 {% endblock %}

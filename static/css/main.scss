@@ -65,3 +65,82 @@ body {
 .login_form{
  margin-top:7rem !important;
 }
+.margin_top_7{
+    margin-top:7rem;
+}
+//making select options visible for update profile basic
+#id_job_type_name{
+    display:inline-block;
+}
+#id_highest_education{
+    display:inline-block;
+}
+#id_degree_type{
+    display:inline-block;
+}
+#id_degree_name{
+    display:inline-block;
+}
+//Basic Form for jobseeker
+.basic_form > * {
+    margin-bottom:5rem;
+}
+//responsive images
+.img-responsive {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+//text transform capitalize
+.capitalize{
+    text-transform:capitalize;
+}
+//heading
+.heading{
+
+    text-transform: uppercase;
+    font-weight: 700;
+    display: inline-block;
+    background-image: linear-gradient(to right, $primary-color, $primary-color);
+    -webkit-background-clip: text;
+    color: transparent;
+    letter-spacing: .2rem;
+    transition: all .2s;
+
+    &:hover {
+        transform: skewY(1deg) skewX(7deg) scale(1.1);
+        text-shadow: .5rem 1rem 2rem rgba(black, .2);
+    }
+}
+.heading-secondary{
+
+    text-transform: capitalize;
+    font-weight: 400;
+    display: inline-block;
+    background-image: linear-gradient(to right, $primary-color, $primary-color);
+    -webkit-background-clip: text;
+    color: transparent;
+    letter-spacing: .1rem;
+    transition: all .2s;
+
+    &:hover {
+        transform: skewY(1deg) skewX(7deg) scale(1.1);
+        text-shadow: .5rem 1rem 2rem rgba(black, .2);
+    }
+}
+//margin top 1rem
+.margin_top_1{
+    margin-top:1rem;
+}
+//z index
+.z_index{
+    z-index:1000 !important;
+}
+.btn-floating_1{
+    transform:translateY(-55%);
+}
+//hover effect
+.hover:hover{
+  transition:all .2s;
+    transform:scale(1.05)
+}

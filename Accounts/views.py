@@ -16,7 +16,7 @@ from django.shortcuts import redirect
 
 def index(request):
     if request.user.is_authenticated:
-        user_type_object = User_type.objects.get(user=request.user)
+        user_type_object,created = User_type.objects.get_or_create(user=request.user)
         if user_type_object.user_type_name == 'jobseeker':
             return redirect(reverse('Jobseeker:jobseeker_home'))
         elif user_type_object.user_type_name == 'employer':

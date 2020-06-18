@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,9 +31,13 @@
     <div class="nav-wrapper">
       <a href="/" class="brand-logo">Find My Job</a>
       <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down">
+      <ul class="right hide-on-med-and-down nav_active">
           {% if request.user.is_authenticated %}
-        <li><a href="#!">Profile</a></li>
+            {% if user_type.user_type_name == 'jobseeker' %}
+        <li><a href="{% url 'Jobseeker:jobseeker_profile' %}">Profile{% if need_update %}<span class="btn-floating pulse new badge"></span>{% endif %}</a></li>
+            {% elif user_type.user_type_name == 'employer' %}
+          <li><a href="{% url 'Employer:employer_profile' %}">Profile</a></li>
+            {% endif %}
         <li><a href="{% url 'Accounts:user_logout' %}">Logout</a></li>
           {% else %}
         <li><a href="{% url 'Accounts:user_login' %}">Login</a></li>
@@ -42,9 +47,13 @@
     </div>
     </nav>
   </div>
-  <ul class="sidenav" id="mobile-demo">
+  <ul class="sidenav nav_active" id="mobile-demo">
           {% if request.user.is_authenticated %}
-        <li><a href="#!">Profile</a></li>
+            {% if user_type.user_type_name == 'jobseeker' %}
+        <li><a href="{% url 'Jobseeker:jobseeker_profile' %}">Profile{% if need_update %}<span class="btn-floating pulse new badge">1</span>{% endif %}</a></li>
+            {% elif user_type.user_type_name == 'employer' %}
+          <li><a href="{% url 'Employer:employer_profile' %}">Profile</a></li>
+            {% endif %}
         <li><a href="{% url 'Accounts:user_logout' %}">Logout</a></li>
           {% else %}
         <li><a href="{% url 'Accounts:user_login' %}">Login</a></li>
@@ -78,8 +87,8 @@
           </div>
           <div class="footer-copyright">
             <div class="container">
-            © 2014 Copyright Text
-            <a class="grey-text text-lighten-4 right" href="#!">Developed by Mukhesh Inturi</a>
+            © 2020 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">Designed & Developed by Mukhesh Inturi</a>
             </div>
           </div>
         </footer>
