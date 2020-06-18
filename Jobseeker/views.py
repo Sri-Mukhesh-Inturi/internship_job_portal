@@ -56,7 +56,7 @@ def jobseeker_update_profile_basic(request):
     return render(request,'Jobseeker/jobseeker_update_profile_basic.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'need_update':0,'basic_form':basic_form})
 
 
-def jobseeker_update_education(request):
+def jobseeker_update_education(request,id):
     # User_type Table Object
     user_type_user = User_type.objects.get(user=request.user)
     # Jobseeker_basic Table Object
@@ -65,29 +65,49 @@ def jobseeker_update_education(request):
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
     # Logic starts here
+    if id>0:
+        target_object = Jobseeker_education.objects.get(pk=id)
     if request.method == "POST":
-        education_form = JobseekerEducationForm(data=request.POST)
-        if education_form.is_valid():
-            print('form is valid \n')
-            formInstance = education_form.save(commit=False)
-            formInstance.user = jobseeker_basic_object
-            formInstance.degree_type = request.POST.get('degree_type')
-            formInstance.degree_name = request.POST.get('degree_name')
-            formInstance.save()
-            return redirect(reverse('Jobseeker:jobseeker_profile'))
+        if id==0:
+            education_form = JobseekerEducationForm(data=request.POST)
+            if education_form.is_valid():
+                print('form is valid \n')
+                formInstance = education_form.save(commit=False)
+                formInstance.user = jobseeker_basic_object
+                formInstance.degree_type = request.POST.get('degree_type')
+                formInstance.degree_name = request.POST.get('degree_name')
+                formInstance.save()
+                return redirect(reverse('Jobseeker:jobseeker_profile'))
+        else:
+            education_form = JobseekerEducationForm(data=request.POST)
+            if education_form.is_valid():
+                target_object = Jobseeker_education.objects.get(pk=id)
+                target_object.degree_type=request.POST.get('degree_type')
+                target_object.degree_name = request.POST.get('degree_name')
+                target_object.cgpa = request.POST.get('cgpa')
+                target_object.start_date = request.POST.get('start_date')
+                target_object.end_date = request.POST.get('end_date')
+                target_object.institute = request.POST.get('institute')
+                target_object.save()
+                return redirect(reverse('Jobseeker:jobseeker_profile'))
+
     else:
-        education_form = JobseekerEducationForm()
-    return render(request,'Jobseeker/jobseeker_update_education.html',{'jobseeker_basic': jobseeker_basic_object, 'user_type': user_type_user, 'need_update': 0,'education_form': education_form})
+        if id==0:
+            education_form = JobseekerEducationForm()
+        else:
+            my_dict = {'degree_type':target_object.degree_type,'degree_name':target_object.degree_name,'institute':target_object.institute,'cgpa':target_object.cgpa,'start_date':target_object.start_date,'end_date':target_object.end_date}
+            education_form = JobseekerEducationForm(initial=my_dict)
+    return render(request,'Jobseeker/jobseeker_update_education.html',{'jobseeker_basic': jobseeker_basic_object, 'user_type': user_type_user, 'need_update': 0,'education_form': education_form,'id':id})
 
 
 def jobseeker_update_education_crud(request,operation,id):
     print('The operation is '+operation+"  and id is "+str(id))
     if operation=='new':
-        return redirect(reverse('Jobseeker:jobseeker_update_education'))
+        return jobseeker_update_education(request,0)
     elif operation == 'delete':
         target_object = Jobseeker_education.objects.get(pk=id)
         target_object.delete()
         print('\ndeleted successfully\n')
         return redirect(reverse('Jobseeker:jobseeker_profile'))
-    else:
-        return redirect(reverse('Jobseeker:jobseeker_update_education'))
+    elif operation=='edit':
+        return jobseeker_update_education(request,id)

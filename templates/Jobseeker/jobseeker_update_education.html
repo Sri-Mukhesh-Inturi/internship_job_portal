@@ -25,7 +25,7 @@
    {% endif %}
 
    <div class=" row container center-align" style="margin:auto;">
-   <form class="basic_form col s12 offset-s4" method="POST" name="education_form" enctype="multipart/form-data" action="{% url 'Jobseeker:jobseeker_update_education' %}">
+   <form class="basic_form col s12 offset-s4" method="POST" name="education_form" enctype="multipart/form-data" action="{% url 'Jobseeker:jobseeker_update_education' id=id %}">
        {% csrf_token %}
 
          <div class="row">
@@ -66,6 +66,9 @@
            </div>
        </div>
    </form>
+
+
+
    </div>
 
 
