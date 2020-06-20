@@ -12,6 +12,7 @@ class User_type(models.Model):
     user_type_name = models.CharField(max_length=10,default="jobseeker",choices=user_type_choices)
     phone_number = models.CharField(max_length=10)
     current_city = models.CharField(max_length=30)
-
+    def __str__(self):
+        return self.user.username
 
 

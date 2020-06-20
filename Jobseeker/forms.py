@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from Accounts.models import User_type
 from Jobseeker.models import Jobseeker_basic,Jobseeker_skill_set,Jobseeker_experience,Jobseeker_education,Skill_set
-from Accounts.sample import new_edu_details_1,new_job_categories_1,new_courses_1
+from Accounts.sample import new_edu_details_1,new_job_categories_1,new_courses_1,new_city_1
 
 class JobseekerBasicForm(forms.ModelForm):
 
@@ -77,4 +77,45 @@ class JobseekerEducationForm(forms.ModelForm):
             raise forms.ValidationError("CGPA cant be less than 0")
         if start_date > end_date:
             raise forms.ValidationError("end date can't be before start date")
+
+
+class JobseekerExperienceForm(forms.ModelForm):
+
+    class Meta():
+        model = Jobseeker_experience
+        fields = ('job_title','company_name','start_date','end_date','job_description')
+        help_texts = {
+            'job_title': None,
+            'company_name':None,
+            'start_date':None,
+            'end_date': None,
+            'job_description': None,
+        }
+        widgets={
+                   "start_date":forms.DateInput(format=('%d-%m-%Y'),attrs={'type':'date'}),
+                   "end_date":forms.DateInput(format=('%d-%m-%Y'),attrs={'type':'date'}),
+                }
+
+    job_location_city = forms.ChoiceField(choices=new_city_1, widget=forms.Select)
+    def clean(self):
+        all_clean_data=super().clean()
+        start_date = all_clean_data['start_date']
+        end_date = all_clean_data['end_date']
+        if start_date > end_date:
+            raise forms.ValidationError("end date can't be before start date")
+
+class JobseekerSkillSetForm(forms.ModelForm):
+
+    class Meta():
+        model = Jobseeker_skill_set
+        fields = ('skill_level',)
+        help_texts = {
+            'skill_level': None,
+        }
+    skill_set_name = forms.CharField(max_length=30)
+    def clean(self):
+        all_clean_data=super().clean()
+        skill_level = all_clean_data['skill_level']
+        if skill_level <0 or skill_level>10:
+            raise forms.ValidationError("Invalid Skill Level")
 

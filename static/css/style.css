@@ -44,7 +44,7 @@ body {
   background-color: #455a64; }
 
 .content {
-  min-height: 100vh;
+  min-height: 70vh;
   overflow: hidden;
   position: relative; }
 
@@ -67,6 +67,9 @@ body {
   display: inline-block; }
 
 #id_degree_name {
+  display: inline-block; }
+
+#id_job_location_city {
   display: inline-block; }
 
 .basic_form > * {

@@ -14,6 +14,9 @@ class Jobseeker_basic(models.Model):
     highest_education = models.CharField(max_length=50,default='none')
     resume = models.FileField(upload_to='resumes/',blank=True)
     job_type_name = models.CharField(max_length=50,default='none')
+    def __str__(self):
+        return self.user.user.username
+
 
 class Jobseeker_education(models.Model):
     user = models.ForeignKey(Jobseeker_basic,on_delete=models.CASCADE)
@@ -23,6 +26,9 @@ class Jobseeker_education(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     cgpa = models.FloatField()
+    def __str__(self):
+        return self.user.user.user.username
+
 class Jobseeker_experience(models.Model):
     user = models.ForeignKey(Jobseeker_basic,on_delete=models.CASCADE)
     job_title = models.CharField(max_length=60)
@@ -31,11 +37,16 @@ class Jobseeker_experience(models.Model):
     job_description = models.TextField(blank=True)
     start_date = models.DateField()
     end_date = models.DateField()
-
+    def __str__(self):
+        return self.user.user.user.username
 class Skill_set(models.Model):
     skill_set_name = models.CharField(max_length=30)
+    def __str__(self):
+        return self.skill_set_name
 
 class Jobseeker_skill_set(models.Model):
     user = models.ForeignKey(Jobseeker_basic,on_delete=models.CASCADE)
     skill_set_id = models.ForeignKey(Skill_set,on_delete=models.CASCADE)
     skill_level = models.IntegerField()
+    def __str__(self):
+        return self.user.user.user.username+"-"+self.skill_set_id.skill_set_name

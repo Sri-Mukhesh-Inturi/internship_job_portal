@@ -63,9 +63,9 @@
                             <div class="card-content">
                               <span class="card-title">{{education.degree_type}}&emsp;CGPA&nbsp;:&nbsp;{{education.cgpa}}&nbsp;/&nbsp;10</span>
                               <div>
-                                  <p class="margin_top_1"><b>Course:</b>&emsp;{{education.degree_name}}</p>
-                                  <p class="margin_top_1"><b>Institute:</b>&emsp;{{education.institute}}</p>
-                                  <p class="margin_top_1"><b>Start Date:</b>&emsp;{{education.start_date}}</p>
+                                  <p class="margin_top_1"><b>Course:</b>&emsp;{{education.degree_name}}</p><br>
+                                  <p class="margin_top_1"><b>Institute:</b>&emsp;{{education.institute}}</p><br>
+                                  <p class="margin_top_1"><b>Start Date:</b>&emsp;{{education.start_date}}</p><br>
                                   <p class="margin_top_1"><b>End Date:</b>&emsp;&nbsp;{{education.end_date}}</p>
                               </div>
                             </div>
@@ -79,6 +79,65 @@
                 </div>
             {% endif %}
         </div>
+<!--        for jobseeker experience details-->
+        <div class="row">
+             <h3 class="heading left-align flow-text col s8">Your Experience Details</h3>
+            <a style="transform:translateY(50%);" href="{% url 'Jobseeker:experience_crud' operation='new' id=0 %}"  class=" btn-floating  waves-effect waves-light red tooltipped" data-position="right" data-tooltip="Add New Experience Details"><i class="material-icons">add</i></a>
+        </div>
+        <div class="row">
+            {% if not jobseeker_experience_objects %}
+                 <h3 class="heading-secondary left-align flow-text col s12">You have not added any experience details (Fresher)</h3>
+            {% else %}
+                <div class="row">
+                    {% for experience in jobseeker_experience_objects %}
+                        <div class="hover col s12 m6">
+                          <div class="card">
+                            <div class="card-content">
+                              <span class="card-title">{{experience.job_title}}&nbsp;at &nbsp;{{experience.company_name}}</span>
+                              <div>
+                                  <p class="margin_top_1"><b>Job location City:</b>&emsp;{{experience.job_location_city}}</p><br>
+                                  <p class="margin_top_1"><b>Job Description:</b>&emsp;{{experience.job_description}}</p><br>
+                                  <p class="margin_top_1"><b>Start Date:</b>&emsp;{{experience.start_date}}</p><br>
+                                  <p class="margin_top_1"><b>End Date:</b>&emsp;&nbsp;{{experience.end_date}}</p>
+                              </div>
+                            </div>
+                            <div class="card-action">
+                              <a  class="waves-effect waves-light btn " href="{% url 'Jobseeker:experience_crud' operation='edit' id=experience.id  %}"><i class="material-icons left">edit</i>Edit</a> &emsp;
+                              <a href="{% url 'Jobseeker:experience_crud' operation='delete' id=experience.id %}" class="waves-effect waves-light btn red lighten-1"><i class="material-icons left">delete</i>Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+<!--        jobseeker skill set details-->
+        <div class="row">
+             <h3 class="heading left-align flow-text col s8">Your Skills</h3>
+            <a style="transform:translateY(50%);" href="{% url 'Jobseeker:skill_set_crud' operation='new' id=0 %}"  class=" btn-floating  waves-effect waves-light red tooltipped" data-position="right" data-tooltip="Add Skill"><i class="material-icons">add</i></a>
+        </div>
+        <div class="row">
+            {% if not jobseeker_skill_set_objects %}
+                 <h3 class="heading-secondary left-align flow-text col s12">You have not added any Skills</h3>
+            {% else %}
+                <div class="row">
+                    {% for skill_set in jobseeker_skill_set_objects %}
+                        <div class="hover col s6 m3">
+                          <div class="card">
+                            <div class="card-content">
+                              <span class="card-title">{{skill_set.skill_set_id.skill_set_name}}&nbsp;&emsp; &nbsp;{{skill_set.skill_level}}&nbsp;/&nbsp;10</span>
+                            </div>
+                            <div class="card-action">
+                              <a href="{% url 'Jobseeker:skill_set_crud' operation='delete' id=skill_set.id %}" class="waves-effect waves-light btn red lighten-1"><i class="material-icons left">delete</i>Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+
     </div>
     {% endif %}
 

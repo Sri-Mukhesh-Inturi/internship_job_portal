@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Experience Details {% endblock %}
+{% block content %}
+      {% if messages %}
+   <div class="center-align">
+       {% for message in messages %}
+           <h5>{{ message }}</h5>
+       {% endfor %}
+   </div>
+   {% endif %}
+   {% if experience_form.errors %}
+       {% for field in experience_form %}
+           {% for error in field.errors %}
+                 <div class="center-align">
+                   <h5>{{error|escape}}<h5>
+                 </div>
+           {% endfor %}
+       {% endfor %}
+       {% for error in experience_form.non_field_errors %}
+       <div class="center-align">
+         <h5>{{error|escape}}<h5>
+       </div>
+       {% endfor %}
+   {% endif %}
+
+   <div class=" row container center-align" style="margin:auto;">
+   <form class="basic_form col s12 offset-s4" method="POST" name="experience_form" enctype="multipart/form-data" action="{% url 'Jobseeker:jobseeker_update_experience' id=id %}">
+       {% csrf_token %}
+
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_job_title"><span>Job Title (your role)</span>{{experience_form.job_title}}</label>
+                 </div>
+         </div>
+          <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_company_name"><span>Company Name</span>{{experience_form.company_name}}</label>
+                 </div>
+         </div>
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label  for="id_job_location_city"><span>Job Location</span>  {{experience_form.job_location_city}}</label>
+                 </div>
+         </div>
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_start_date"><span>Start Date</span> {{experience_form.start_date}}</label>
+
+                 </div>
+         </div>
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_end_date"><span>End Date</span>{{experience_form.end_date}}</label>
+
+                 </div>
+         </div>
+          <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label  for="id_job_description"><span>Job Description</span> {{experience_form.job_description}}</label>
+                 </div>
+         </div>
+       <div class="row">
+           <div class="input-field col s4">
+               <button class="btn waves-effect waves-light" type="submit" name="submit">Submit</button>
+           </div>
+       </div>
+   </form>
+
+
+
+   </div>
+
+
+{% endblock %}

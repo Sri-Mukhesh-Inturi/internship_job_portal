@@ -20,3 +20,7 @@ $(document).ready(function() {
     var elems = document.querySelectorAll('.datepicker');
     var instances = M.Datepicker.init(elems, {});
   });
+
+//for slider
+ var array_of_dom_elements = document.querySelectorAll("input[type=range]");
+ M.Range.init(array_of_dom_elements);

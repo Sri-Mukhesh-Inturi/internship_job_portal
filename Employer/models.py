@@ -7,7 +7,8 @@ class Company(models.Model):
     company_name = models.CharField(max_length=50)
     company_logo = models.ImageField(upload_to='company_logos',default='../static/images/default_company_logo.png')
     company_description = models.TextField()
-
+    def __str__(self):
+        return self.company_name
 
 
 class Employer_basic(models.Model):
@@ -15,7 +16,8 @@ class Employer_basic(models.Model):
     company = models.ForeignKey(Company,on_delete=models.PROTECT,blank=True)
     profile_picture = models.ImageField(upload_to='pictures/', default='../static/images/default_profile_picture.png')
     description = models.TextField(blank=True)
-
+    def __str__(self):
+        return self.user.user.username
 class Job_type(models.Model):
     job_type_name = models.CharField(max_length=50)
 
@@ -24,13 +26,15 @@ class Job_location(models.Model):
     city = models.CharField(max_length=30)
     state = models.CharField(max_length=30)
     zip_code = models.IntegerField()
-
+    def __str__(self):
+        return self.city
 class Job_post(models.Model):
     posted_by_id = models.ForeignKey(Employer_basic,on_delete=models.CASCADE)
-    job_type_id = models.ForeignKey(Job_type,on_delete=models.CASCADE)
+    job_type_name = models.CharField(max_length=50,default="Not Selected")
     is_company_name_hidden = models.BooleanField(default=False)
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateField(auto_now=True)
+    job_title = models.CharField(max_length=200,default="Job Post")
     job_description = models.TextField()
     job_location_id = models.ForeignKey(Job_location,on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
