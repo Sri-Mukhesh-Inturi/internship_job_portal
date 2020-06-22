@@ -44,7 +44,7 @@ body {
   background-color: #455a64; }
 
 .content {
-  min-height: 70vh;
+  min-height: 60vh;
   overflow: hidden;
   position: relative; }
 
@@ -70,6 +70,9 @@ body {
   display: inline-block; }
 
 #id_job_location_city {
+  display: inline-block; }
+
+#id_job_type {
   display: inline-block; }
 
 .basic_form > * {

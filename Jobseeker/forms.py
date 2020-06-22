@@ -93,12 +93,15 @@ class JobseekerExperienceForm(forms.ModelForm):
                    "start_date":forms.DateInput(format=('%d-%m-%Y'),attrs={'type':'date'}),
                    "end_date":forms.DateInput(format=('%d-%m-%Y'),attrs={'type':'date'}),
                 }
-
+    job_type = forms.ChoiceField(choices=(('Not Selected','Not Selected'),('Internship','Internship'),('Full Time','Full Time')),widget=forms.Select)
     job_location_city = forms.ChoiceField(choices=new_city_1, widget=forms.Select)
     def clean(self):
         all_clean_data=super().clean()
         start_date = all_clean_data['start_date']
         end_date = all_clean_data['end_date']
+        job_type = all_clean_data['job_type']
+        if job_type=='Not Selected':
+            raise forms.ValidationError("Please select Job Type")
         if start_date > end_date:
             raise forms.ValidationError("end date can't be before start date")
 

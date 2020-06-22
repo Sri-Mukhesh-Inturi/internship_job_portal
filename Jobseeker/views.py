@@ -172,6 +172,7 @@ def jobseeker_update_experience(request, id):
                 formInstance = experience_form.save(commit=False)
                 formInstance.user = jobseeker_basic_object
                 formInstance.job_location_city = request.POST.get('job_location_city')
+                formInstance.job_type = request.POST.get('job_type')
                 formInstance.save()
                 return redirect(reverse('Jobseeker:jobseeker_profile'))
         else:
@@ -184,6 +185,7 @@ def jobseeker_update_experience(request, id):
                 target_object.start_date = request.POST.get('start_date')
                 target_object.end_date = request.POST.get('end_date')
                 target_object.company_name = request.POST.get('company_name')
+                target_object.job_type = request.POST.get('job_type')
                 target_object.save()
                 return redirect(reverse('Jobseeker:jobseeker_profile'))
 
@@ -191,7 +193,7 @@ def jobseeker_update_experience(request, id):
         if id == 0:
             experience_form = JobseekerExperienceForm()
         else:
-            my_dict = {'job_location_city': target_object.job_location_city, 'job_title': target_object.job_title,
+            my_dict = {'job_type':target_object.job_type,'job_location_city': target_object.job_location_city, 'job_title': target_object.job_title,
                        'job_description': target_object.job_description, 'company_name': target_object.company_name,
                        'start_date': target_object.start_date, 'end_date': target_object.end_date}
             experience_form = JobseekerExperienceForm(initial=my_dict)

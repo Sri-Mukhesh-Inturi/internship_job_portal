@@ -31,6 +31,7 @@ class Jobseeker_education(models.Model):
 
 class Jobseeker_experience(models.Model):
     user = models.ForeignKey(Jobseeker_basic,on_delete=models.CASCADE)
+    job_type = models.CharField(max_length=20,default="Full Time")
     job_title = models.CharField(max_length=60)
     company_name = models.CharField(max_length=60)
     job_location_city = models.CharField(max_length=30)

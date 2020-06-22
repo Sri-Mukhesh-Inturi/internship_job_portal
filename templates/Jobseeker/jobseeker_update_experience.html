@@ -27,7 +27,11 @@
    <div class=" row container center-align" style="margin:auto;">
    <form class="basic_form col s12 offset-s4" method="POST" name="experience_form" enctype="multipart/form-data" action="{% url 'Jobseeker:jobseeker_update_experience' id=id %}">
        {% csrf_token %}
-
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label  for="id_job_type"><span>Job Type</span>  {{experience_form.job_type}}</label>
+                 </div>
+         </div>
          <div class="row">
                  <div class="input-field col s8 m4 ">
                      <label for="id_job_title"><span>Job Title (your role)</span>{{experience_form.job_title}}</label>

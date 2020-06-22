@@ -54,7 +54,7 @@ body {
     //margin-top:4rem;
 }
 .content{
-    min-height:50vh;
+    min-height:60vh;
     overflow:hidden;
     position:relative;
 }
@@ -82,6 +82,9 @@ body {
     display:inline-block;
 }
 #id_job_location_city{
+    display:inline-block;
+}
+#id_job_type{
     display:inline-block;
 }
 //Basic Form for jobseeker
