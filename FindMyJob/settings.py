@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'Employer',
     'Jobseeker',
     'phonenumber_field',
-    #'livereload',
     'Accounts',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,8 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_cleanup',
     'django.contrib.humanize',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

@@ -38,9 +38,7 @@ class JobseekerBasicForm(forms.ModelForm):
              raise forms.ValidationError(" Please Enter a valid phone number")
         except:
             raise forms.ValidationError("Please enter a valid phone number")
-
-        if User_type.objects.filter(phone_number=ph_number).exists():
-            raise forms.ValidationError("A user with the phone number already exists")
+        #phone number checking from existing users
 
 
 class JobseekerEducationForm(forms.ModelForm):

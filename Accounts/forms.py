@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from Accounts.models import User_type
 from .sample import new_city_1
+from django.core.validators import validate_email
 class UserForm(forms.ModelForm):
 
     class Meta():
@@ -15,7 +16,7 @@ class UserForm(forms.ModelForm):
             'username': forms.TextInput(),
             'first_name': forms.TextInput(),
             'last_name': forms.TextInput(),
-            'email': forms.TextInput(),
+            'email': forms.EmailInput(),
             'password': forms.TextInput(),
         }
 
@@ -34,9 +35,13 @@ class UserForm(forms.ModelForm):
         all_clean_data=super().clean()
         username=all_clean_data['username']
         #email verification
-        email=all_clean_data['email']
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Email already exists")
+        try:
+            email=all_clean_data['email']
+            if User.objects.filter(email=email).exists():
+                raise forms.ValidationError("Email already exists")
+        except:
+            raise forms.ValidationError("Invalid Email Entered")
+
         #password verification
         p1 = all_clean_data['password']
         p2 = all_clean_data['retype_password']

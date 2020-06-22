@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from .models import Jobseeker_basic,Jobseeker_education,Jobseeker_experience,Jobseeker_skill_set,Skill_set
 from Accounts.models import User_type
@@ -6,6 +7,9 @@ from django.contrib.auth.models import User
 from .forms import JobseekerBasicForm,JobseekerEducationForm,JobseekerExperienceForm,JobseekerSkillSetForm
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib import messages
+
+
 # Create your views here.
 def jobseeker_home(request):
     user_type_user = User_type.objects.get(user=request.user)
@@ -46,19 +50,48 @@ def jobseeker_update_profile_basic(request):
         basic_form=JobseekerBasicForm(request.POST,request.FILES)
         if basic_form.is_valid():
             print('form is valid \n')
-            formInstance = basic_form.save(commit=False)
-            formInstance.user = user_type_user
-            formInstance.highest_education = request.POST.get('highest_education')
-            formInstance.job_type_name = request.POST.get('job_type_name')
-            formInstance.save()
-            user_type_user.phone_number = request.POST.get('phone_number')
+            jobseeker_basic_object.profile_picture = basic_form.cleaned_data['profile_picture']
+            jobseeker_basic_object.salary_expectation =basic_form.cleaned_data['salary_expectation']
+            jobseeker_basic_object.description = basic_form.cleaned_data['description']
+            jobseeker_basic_object.highest_education = basic_form.cleaned_data['highest_education']
+            jobseeker_basic_object.resume = basic_form.cleaned_data['resume']
+            jobseeker_basic_object.job_type_name = basic_form.cleaned_data['job_type_name']
+            jobseeker_basic_object.save()
+
+            # formInstance = basic_form.save(commit=False)
+            # formInstance.user = user_type_user
+            # formInstance.highest_education = request.POST.get('highest_education')
+            # formInstance.job_type_name = request.POST.get('job_type_name')
+            # formInstance.save()
+            #phone number verification
+            try:
+                ph_object = User_type.objects.get(phone_number=request.POST.get('phone_number').replace(" ",""))
+                if ph_object.user != request.user:
+                    messages.error(request, "A user with that phone number already exists")
+                    return redirect(reverse('Jobseeker:jobseeker_update_profile_basic'))
+                else:
+                    user_type_user.phone_number = request.POST.get('phone_number')
+            except ObjectDoesNotExist:
+                user_type_user.phone_number = request.POST.get('phone_number')
             user_type_user.save()
             print('\nsaved successfully')
             return redirect(reverse('Jobseeker:jobseeker_profile'))
 
     else:
-        basic_form = JobseekerBasicForm()
-    return render(request,'Jobseeker/jobseeker_update_profile_basic.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'need_update':0,'basic_form':basic_form})
+        if created==True:
+            my_dict ={'phone_number':user_type_user.phone_number}
+            basic_form = JobseekerBasicForm(initial=my_dict)
+        else:
+            my_dict = {
+                           'salary_expectation': jobseeker_basic_object.salary_expectation,
+                           'description': jobseeker_basic_object.description,
+                           'highest_education': jobseeker_basic_object.highest_education,
+                           'job_type_name': jobseeker_basic_object.job_type_name,
+                           'phone_number': user_type_user.phone_number}
+
+            basic_form = JobseekerBasicForm(initial=my_dict)
+    return render(request,'Jobseeker/jobseeker_update_profile_basic.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'need_update':0,'basic_form':basic_form,'id':id})
+
 
 
 def jobseeker_update_education(request,id):
