@@ -25,14 +25,25 @@
    {% endif %}
 
    <div class=" row container center-align" style="margin:auto;">
-   <form class="basic_form col s12 offset-s4" method="POST" name="skill_set_form" enctype="multipart/form-data" action="{% url 'Jobseeker:jobseeker_update_skill_set' id=id %}">
+   <form autocomplete="off" class="basic_form col s12 offset-s4" method="POST" name="skill_set_form" enctype="multipart/form-data" action="{% url 'Jobseeker:jobseeker_update_skill_set' id=id %}">
        {% csrf_token %}
 
-         <div class="row">
-                 <div class="input-field col s8 m5 ">
-                     <label for="id_skill_set_name"><span>Skill Name</span>{{skill_set_form.skill_set_name}}</label>
-                 </div>
-         </div>
+<!--         <div class="row">-->
+<!--                 <div class="input-field col s8 m5 ">-->
+<!--                     <label for="id_skill_set_name"><span>Skill Name</span>-->
+<!--                         <input  type="text" name="skill_set_name" maxlength="30" required="" id="id_skill_set_name">-->
+<!--                     </label>-->
+<!--                 </div>-->
+<!--         </div>-->
+
+
+      <div class="row" style="margin-top:3rem;">
+        <div class="input-field col s8 m4 l3">
+            <input  type="text" name="skill_set_name" maxlength="30" required="" id="id_skill_set_name" class="autocomplete">
+         <label for="id_skill_set_name"><span>Skill Name</span></label>
+        </div>
+      </div>
+
           <div class="row">
                  <div class="margin_top_1 range-field input-field col s8 m5 ">
                      <label for="id_skill_level"><span>Skill Level (0 to 10)</span>
@@ -50,6 +61,20 @@
 
 
    </div>
+
+<script type="text/javascript">
+      $(document).ready(function(){
+    $('input.autocomplete').autocomplete({
+      data: {
+           {% for skill in skills %}
+           "{{skill}}":null,
+           {% endfor %}
+      },
+    });
+  });
+
+
+</script>
 
 
 {% endblock %}

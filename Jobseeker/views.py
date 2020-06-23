@@ -222,6 +222,11 @@ def jobseeker_update_skill_set(request, id):
     need_update = 0  # this is for update profile notification
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
+    #skill set objects skill array containing all the skill set names as list items used in the autocomplete javascript function
+    skill_set_objects = Skill_set.objects.all()
+    skills = []
+    for skill in skill_set_objects:
+        skills.append(skill.skill_set_name)
     # Logic starts here
     if id > 0:
         target_object = Jobseeker_skill_set.objects.get(pk=id)
@@ -234,6 +239,10 @@ def jobseeker_update_skill_set(request, id):
                 formInstance = skill_set_form.save(commit=False)
                 formInstance.user = jobseeker_basic_object
                 skill_set_object,created = Skill_set.objects.get_or_create(defaults={'skill_set_name':skill_set_name}, skill_set_name__iexact=skill_set_name)
+                redundant_objects = Jobseeker_skill_set.objects.filter(user=jobseeker_basic_object,skill_set_id=skill_set_object)
+                if redundant_objects.count() > 0:
+                    messages.error(request,"Skill already exists")
+                    return redirect(reverse('Jobseeker:jobseeker_update_skill_set',kwargs={'id':0}))
                 formInstance.skill_set_id=skill_set_object
                 formInstance.save()
                 return redirect(reverse('Jobseeker:jobseeker_profile'))
@@ -241,7 +250,7 @@ def jobseeker_update_skill_set(request, id):
         if id == 0:
             skill_set_form = JobseekerSkillSetForm()
     return render(request, 'Jobseeker/jobseeker_update_skill_set.html',
-                  {'jobseeker_basic': jobseeker_basic_object, 'user_type': user_type_user, 'need_update': 0,
+                  {'skills':skills,'jobseeker_basic': jobseeker_basic_object, 'user_type': user_type_user, 'need_update': 0,
                    'skill_set_form': skill_set_form, 'id': id})
 
 

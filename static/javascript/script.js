@@ -24,3 +24,6 @@ $(document).ready(function() {
 //for slider
  var array_of_dom_elements = document.querySelectorAll("input[type=range]");
  M.Range.init(array_of_dom_elements);
+
+
+// for autocomplete
