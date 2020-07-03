@@ -1,0 +1,110 @@
+Not Selected
+Accountant
+Animation
+Architect
+Bartender
+Beautician
+Bouncer
+BPO/ Telecaller
+Business Analyst
+Cameraman
+Caretaker/Nanny
+Carpenter
+Cashier
+Cleaner/Washer
+Construction/Laborer
+Content Writer
+Control Room Operator
+Cook/Chef
+Counsellor
+Data Collection/Survey
+Data Entry /Back Office
+Data Scientist
+Database/System/Linux Administrator
+Delivery/Collections
+Designer
+Doctor
+Draftsman
+Driver
+DTP Operator/Print Consultant
+Dubbing Artist
+Dye Maker
+Editor
+Electrician
+Electroplater
+Engineer
+Event Planner
+Financial Advisor
+Fire Fighter
+Fitter
+Floor Manager
+Foundryman
+Gardener
+Handyman
+Help Desk Executive
+Hospitality Executive
+Host/Hostess
+Housekeeping
+HR/Admin
+Insurance Consultant
+IT Hardware & Network Engineer
+IT Software - Developer
+IT Software - QA/Test Engineer
+IT Software - Web Designer
+Lab Assistant
+Language Translator
+Legal
+Librarian
+Life Guard
+Lighting Technician
+Maid
+Market Research Analyst
+Marketing
+Mechanic
+Medical Assistant
+Medical Representative
+Microbiologist
+MIS Executive
+Moulder
+Nurse
+Nutritionist/Dietician
+Office Assistant/Helper
+Operator/Machinist
+Optometrist
+Packager
+Painter
+Pest Control Executive
+Pharmacist
+Photographer
+Plumber
+Porter
+Product Manager
+Program/Project Manager
+Projectionist
+Public Relations
+Purchase Executive
+Quality and Inspection
+Receptionist/Front Office
+Reporter
+Rigger
+Safety Officer
+Sales
+SAP Consultant
+Scientist/Research
+Security/Guard
+Sheet Metal Worker
+Software Architect
+Soldering Operator
+Sound Engineer
+Sports Trainer
+Tailor
+Teacher
+Ticketing Executive
+Trainer
+Transport Supervisor
+Videographer
+Waiter/Steward
+Ward Boy
+Warehouse Executive
+Welder
+Wireman

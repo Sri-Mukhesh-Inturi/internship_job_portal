@@ -15,23 +15,19 @@ body {
   padding-right: 0.2rem;
   font-family: "Lato", sans-serif;
   font-weight: 400;
-  line-height: 1.5;
-  background-color: #fcfcfc; }
+  line-height: 1.5; }
 
 .navbar-fixed nav {
   width: 99%; }
 
 .nav-wrapper {
-  background-color: #37474f; }
+  background-color: #455a64; }
 
 .navbar-fixed {
   top: 0px; }
 
-@media screen and (min-width: 1400px) {
-  .brand-logo {
-    margin-left: 10rem; }
-  .navbar_items {
-    margin-right: 10rem !important; } }
+.brand-logo {
+  margin-left: 2rem; }
 
 #id_current_city {
   display: inline-block; }
@@ -45,7 +41,7 @@ body {
 
 .page-footer {
   width: 100%;
-  background-color: #37474f; }
+  background-color: #455a64; }
 
 .content {
   min-height: 60vh;
@@ -79,12 +75,6 @@ body {
 #id_job_type {
   display: inline-block; }
 
-#id_job_length {
-  display: inline-block; }
-
-#id_city {
-  display: inline-block; }
-
 .basic_form > * {
   margin-bottom: 5rem; }
 
@@ -97,10 +87,10 @@ body {
   text-transform: capitalize; }
 
 .heading {
-  text-transform: capitalize;
+  text-transform: uppercase;
   font-weight: 700;
   display: inline-block;
-  background-image: linear-gradient(to right, #37474f, #37474f);
+  background-image: linear-gradient(to right, #455a64, #455a64);
   -webkit-background-clip: text;
   color: transparent;
   letter-spacing: .2rem;
@@ -113,7 +103,7 @@ body {
   text-transform: capitalize;
   font-weight: 400;
   display: inline-block;
-  background-image: linear-gradient(to right, #37474f, #37474f);
+  background-image: linear-gradient(to right, #455a64, #455a64);
   -webkit-background-clip: text;
   color: transparent;
   letter-spacing: .1rem;
@@ -134,9 +124,3 @@ body {
 .hover:hover {
   transition: all .2s;
   transform: scale(1.05); }
-
-#id_job_description {
-  height: 30vh; }
-
-.job_description {
-  height: 30vh; }

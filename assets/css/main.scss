@@ -3,7 +3,7 @@
     display:none;
 }
 //variables
-$primary-color:#37474f;
+$primary-color:#455a64;
 *,
 *::after,
 *::before {
@@ -21,7 +21,6 @@ body {
     font-family: "Lato", sans-serif;
     font-weight: 400;
     line-height: 1.5;
-    background-color:rgb(252,252,252);
 }
 //  navbar
 .navbar-fixed nav{
@@ -33,14 +32,8 @@ body {
 .navbar-fixed{
     top:0px;
 }
-
-@media screen and (min-width: 1400px) {
-  .brand-logo {
-    margin-left:10rem;
-  }
-  .navbar_items{
-    margin-right:10rem !important;
-  }
+.brand-logo{
+    margin-left:2rem;
 }
 // Registration Form
 #id_current_city{
@@ -94,13 +87,6 @@ body {
 #id_job_type{
     display:inline-block;
 }
-
-#id_job_length{
-    display:inline-block;
-}
-#id_city{
-    display:inline-block;
-}
 //Basic Form for jobseeker
 .basic_form > * {
     margin-bottom:5rem;
@@ -118,7 +104,7 @@ body {
 //heading
 .heading{
 
-    text-transform: capitalize;
+    text-transform: uppercase;
     font-weight: 700;
     display: inline-block;
     background-image: linear-gradient(to right, $primary-color, $primary-color);
@@ -164,10 +150,4 @@ body {
   transition:all .2s;
     transform:scale(1.05)
 }
-//for job description
-#id_job_description{
-    height:30vh;
-}
-.job_description{
-    height:30vh;
-}
+//for autocomplete in forms

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %} Profile {% endblock %}
+{% block content %}
+    {% if need_update %}
+    <div class="container align-center margin_top_7">
+        <div>
+            <h3 class="flow-text ">It seems you have not built your Profile</h3>
+        </div>
+        <div style="margin-top:2rem;">
+            <a href="{% url 'Employer:employer_update_profile_basic' %}" class="waves-effect waves-light btn pulse center-align  "><i class="material-icons left">build</i>Build My Profile</a>
+        </div>
+    </div>
+    {% else %}
+    <div class="container">
+        <div class="row">
+            <h3 class="heading left-align flow-text col s12">Hey {{user_type.user.first_name}}! You can edit your details here</h3>
+       </div>
+
+        <div class="row">
+            <div class="col s12 m6 l4">
+              <div class="card hoverable large grey lighten-5">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img class="activator img-responsiv" src="{{employer_basic.profile_picture.url}}">
+                    <a href="{% url 'Employer:employer_update_profile_basic' %}"  class="btn-floating btn-floating_1 halfway-fab waves-effect waves-light red tooltipped" data-position="right" data-tooltip="edit basic details"><i class="material-icons">edit</i></a>
+                </div>
+
+                <div class="card-content">
+                  <span class="card-title activator capitalize grey-text text-darken-4">{{user_type.user.first_name}}&nbsp;{{user_type.user.last_name}}<i class="material-icons right">more_vert</i></span>
+                    <p class="activator" style="cursor:pointer;">click to view more details</p>
+                </div>
+                <div class="card-reveal ">
+                  <span class="card-title capitalize grey-text text-darken-4">{{user_type.user.first_name}}&nbsp;{{user_type.user.last_name}}<i class="material-icons right">close</i></span>
+                  <div>
+                       <p class="margin_top_1"><b>Description:</b><br>{{employer_basic.description}}</p>
+                      {% if user_type.user.email %}
+                       <p class="margin_top_1"><b>Email:</b>&nbsp;&nbsp;<a href="mailto:{{user_type.user.email}}">{{user_type.user.email}}</a></p>
+                      {% endif %}
+                      {% if employer_basic.company %}
+                         <p class="margin_top_1"><b>Company:</b>&emsp;{{employer_basic.company.company_name}}</p>
+                      {%  endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+        <div class="divider"></div>
+<!--        Company details goes here if exists-->
+        {% if employer_basic.company %}
+        <div class="row ">
+            <h3 class="heading left-align flow-text col s10">You are associated with <i> {{employer_basic.company.company_name}}</i></h3>
+            {% if employer_basic.is_owner %}
+            <a  style="transform:translateY(50%);" href="{% url 'Employer:edit_company' company_name=employer_basic.company.company_name %}"  class="btn-floating  waves-effect waves-light red tooltipped " data-position="right" data-tooltip="edit company details"><i class="material-icons">edit</i></a>
+            {% endif %}
+       </div>
+
+    <div class="row">
+      <div class="col s12 m7 row ">
+        <div class="valign-wrapper hoverable card horizontal">
+          <div class="card-image col s3">
+            <img class="responsive-img circle" src="{{employer_basic.company.company_logo.url}}">
+          </div>
+          <div class="card-stacked">
+            <div class="card-content">
+              <p class="flow-text small">
+                    {% if employer_basic.company.company_description == "none" %}
+                       <blockquote> The owner of {{employer_basic.company.company_name}} has not added any description</blockquote>
+                    {% else %}
+                        {{employer_basic.company.company_description}}
+                    {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+{% endblock %}

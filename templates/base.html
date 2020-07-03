@@ -32,12 +32,13 @@
     <div class="nav-wrapper">
       <a href="/" class="brand-logo">Find My Job</a>
       <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-      <ul class="right hide-on-med-and-down nav_active">
+      <ul class="right hide-on-med-and-down nav_active navbar_items">
           {% if request.user.is_authenticated %}
             {% if user_type.user_type_name == 'jobseeker' %}
         <li><a href="{% url 'Jobseeker:jobseeker_profile' %}">Profile{% if need_update %}<span class="btn-floating pulse new badge"></span>{% endif %}</a></li>
             {% elif user_type.user_type_name == 'employer' %}
-          <li><a href="{% url 'Employer:employer_profile' %}">Profile</a></li>
+          <li><a href="{% url 'Employer:post_job_crud' operation='new' id=0 %}">Post Job</a></li>
+          <li><a href="{% url 'Employer:employer_profile' %}">Profile{% if need_update %}<span class="btn-floating pulse new badge"></span>{% endif %}</a></li>
             {% endif %}
         <li><a href="{% url 'Accounts:user_logout' %}">Logout</a></li>
           {% else %}
@@ -53,7 +54,8 @@
             {% if user_type.user_type_name == 'jobseeker' %}
         <li><a href="{% url 'Jobseeker:jobseeker_profile' %}">Profile{% if need_update %}<span class="btn-floating pulse new badge">1</span>{% endif %}</a></li>
             {% elif user_type.user_type_name == 'employer' %}
-          <li><a href="{% url 'Employer:employer_profile' %}">Profile</a></li>
+            <li><a href="{% url 'Employer:post_job_crud' operation='new' id=0 %}">Post Job</a></li>
+          <li><a href="{% url 'Employer:employer_profile' %}">Profile{% if need_update %}<span class="btn-floating pulse new badge"></span>{% endif %}</a></li>
             {% endif %}
         <li><a href="{% url 'Accounts:user_logout' %}">Logout</a></li>
           {% else %}

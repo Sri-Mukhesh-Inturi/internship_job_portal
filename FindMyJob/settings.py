@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'FindMyJob.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'FindMyJob',
+        'NAME': 'FMJ',
         'USER' : 'postgres',
         'PASSWORD' : 'admin123456',
         'HOST' : 'localhost'

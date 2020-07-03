@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Post New Job {% endblock %}
+{% block content %}
+      {% if messages %}
+   <div class="center-align">
+       {% for message in messages %}
+           <h5>{{ message }}</h5>
+       {% endfor %}
+   </div>
+   {% endif %}
+   {% if job_post_form.errors %}
+       {% for field in job_post_form %}
+           {% for error in field.errors %}
+                 <div class="center-align">
+                   <h5>{{error|escape}}<h5>
+                 </div>
+           {% endfor %}
+       {% endfor %}
+       {% for error in job_post_form.non_field_errors %}
+       <div class="center-align">
+         <h5>{{error|escape}}<h5>
+       </div>
+       {% endfor %}
+   {% endif %}
+        <div class="row">
+            <h2 class="heading left-align flow-text col s12 offset-s2">Post A Job with id {{id}}</h2>
+       </div>
+   <div class="z-depth-1 row container center-align" style="margin:auto;">
+   <form class="basic_form col s12 offset-s1" method="POST" name="job_post_form" enctype="multipart/form-data" action="{% url 'Employer:employer_post_job' id=id %}">
+       {% csrf_token %}
+
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label  for="id_job_type_name"><span>I want to hire</span>  {{job_post_form.job_type_name}}</label>
+                 </div>
+         </div>
+       <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_job_title"><span>Job Title</span>{{job_post_form.job_title}}</label>
+                 </div>
+         </div>
+              <div class="row job_description">
+                 <div class="input-field col s10 m8 l8  ">
+                     <label for="id_job_description"><span>Job Description (end points by .)</span>{{job_post_form.job_description}}</label>
+                 </div>
+         </div>
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label  for="id_job_length"><span>Job Type</span>  {{job_post_form.job_length}}</label>
+                 </div>
+         </div>
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_city"><span>City</span>{{job_post_form.city}}</label>
+                 </div>
+         </div>
+       <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_is_work_from_home">{{job_post_form.is_work_from_home}}<span>Work From Home Available</span></label>
+                 </div>
+           </div>
+           <div class="row">
+               <div class="input-field col s8 m4 ">
+                     <label for="id_is_company_name_hidden">{{job_post_form.is_company_name_hidden}}<span>Hide Company Details</span></label>
+                 </div>
+         </div>
+
+
+       <div class="row">
+                 <div class="input-field col s8 m3 l3 ">
+                     <label for="id_min_salary"><span>Minimum Salary</span>{{job_post_form.min_salary}}</label>
+                 </div>
+           </div>
+           <div class="row">
+                <div class="input-field col s8 m3  l3 ">
+                     <label for="id_max_salary"><span>Maximum Salary</span>{{job_post_form.max_salary}}</label>
+                 </div>
+               </div>
+           <div class="row">
+                 <div class="input-field col s8 m3 l3">
+                     <label for="id_min_experience"><span>Minimum Experience (in yrs)</span>{{job_post_form.min_experience}}</label>
+                 </div>
+         </div>
+
+       <div class="row">
+           <div class="input-field col s4 offset-s3">
+               <button class="btn waves-effect waves-light" type="submit" name="submit">Post Job</button>
+           </div>
+       </div>
+   </form>
+   </div>
+
+{% endblock %}

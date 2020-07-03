@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Update Basic Profile {% endblock %}
+{% block content %}
+      {% if messages %}
+   <div class="center-align">
+       {% for message in messages %}
+           <h5>{{ message }}</h5>
+       {% endfor %}
+   </div>
+   {% endif %}
+   {% if basic_form.errors %}
+       {% for field in basic_form %}
+           {% for error in field.errors %}
+                 <div class="center-align">
+                   <h5>{{error|escape}}<h5>
+                 </div>
+           {% endfor %}
+       {% endfor %}
+       {% for error in basic_form.non_field_errors %}
+       <div class="center-align">
+         <h5>{{error|escape}}<h5>
+       </div>
+       {% endfor %}
+   {% endif %}
+
+   <div class=" row container center-align" style="margin:auto;">
+   <form class="basic_form col s12 offset-s4" method="POST" name="basic_form" enctype="multipart/form-data" action="{% url 'Employer:employer_update_profile_basic' %}">
+       {% csrf_token %}
+
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_profile_picture"><span>Profile Picture</span>{{basic_form.profile_picture}}</label>
+                 </div>
+         </div>
+          <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_phone_number"><span>Phone Number</span>{{basic_form.phone_number}}</label>
+                 </div>
+         </div>
+
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                     <label for="id_description"><span>Short Description</span> {{basic_form.description}}</label>
+
+                 </div>
+         </div>
+         <div class="row">
+                 <div class="input-field col s8 m4 ">
+                    {{basic_form.company_name}}
+                     <label for="id_company_name"><span>Company Name</span></label>
+                 </div>
+         </div>
+
+       <div class="row">
+           <div class="input-field col s4">
+               <button class="btn waves-effect waves-light" type="submit" name="submit">Submit</button>
+           </div>
+       </div>
+   </form>
+   </div>
+<script type="text/javascript">
+      $(document).ready(function(){
+    $('input.autocomplete').autocomplete({
+      data: {
+           {% for company in company_names %}
+           "{{company}}":null,
+           {% endfor %}
+      },
+    });
+  });
+</script>
+
+{% endblock %}

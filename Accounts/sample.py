@@ -4,6 +4,7 @@ file_path = os.path.join(module_dir, '../static/text/cities.txt')
 file_path_to_educational_details = os.path.join(module_dir, '../static/text/educational_details.txt')
 file_path_to_job_categories = os.path.join(module_dir,'../static/text/job_categories.txt')
 file_path_to_courses = os.path.join(module_dir,'../static/text/courses.txt')
+file_path_to_states = os.path.join(module_dir,'../static/text/states.txt')
 
 file = open(file_path,"r")
 cities=file.readlines()
@@ -48,3 +49,14 @@ for course in courses:
 new_courses_1 = []
 for course in new_courses:
     new_courses_1.append((course,course))
+
+file = open(file_path_to_states,"r")
+states=file.readlines()
+file.close()
+new_states=[]
+for state in states:
+    new_states.append(state.replace("\n",""))
+
+new_state_1=[]
+for state in new_states:
+    new_state_1.append((state,state))

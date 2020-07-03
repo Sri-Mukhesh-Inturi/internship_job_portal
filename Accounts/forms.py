@@ -34,6 +34,9 @@ class UserForm(forms.ModelForm):
     def clean(self):
         all_clean_data=super().clean()
         username=all_clean_data['username']
+        city = all_clean_data['current_city']
+        if city=='Not Selected':
+            raise forms.ValidationError("Please select city")
         #email verification
         try:
             email=all_clean_data['email']
