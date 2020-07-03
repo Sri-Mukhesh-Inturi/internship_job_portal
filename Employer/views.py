@@ -10,7 +10,8 @@ from .models import Employer_basic, Job_post, Job_post_skill_set, Job_post_activ
 from .forms import EmployerBasicForm, CompanyForm, JobPostForm
 from django.shortcuts import redirect
 from django.urls import reverse
-
+#for paginator
+from django.core.paginator import Paginator
 
 # Create your views here.
 def employer_home(request):
@@ -212,3 +213,35 @@ def employer_post_job_crud(request, operation, id):
         return redirect(reverse('Employer:employer_profile'))
     elif operation == 'edit':
         return employer_post_job(request, id)
+
+def employer_view_jobs(request):
+    user_type_user = User_type.objects.get(user=request.user)
+    employer_basic_object, created = Employer_basic.objects.get_or_create(user=user_type_user)
+    need_update = 0  # this is for update profile notification
+    if created or employer_basic_object.description == 'none':
+        need_update = 1
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    job_post_skills_objects_array = []
+    for job_post_object in job_post_objects:
+        job_post_skills_objects_array.append(Job_post_skill_set.objects.filter(job_post_id=job_post_object))
+    skills_array_individual =[]
+    total_job_post_skills_array =[]
+    for queryset in job_post_skills_objects_array:
+        if queryset.count()>0:
+            for item in queryset:
+                skills_array_individual.append(item.skill_set_id.skill_set_name)
+        total_job_post_skills_array.append(skills_array_individual)
+        skills_array_individual=[]
+    final_dict ={}
+    for object,skills in zip(job_post_objects,total_job_post_skills_array):
+        final_dict[object]=skills
+    final_dict_touple = final_dict.items()
+    final_list = list(final_dict_touple)
+    print(final_list)
+    #logic for paginator starts here
+    paginator = Paginator(final_list,1)
+    page = request.GET.get('page')
+    final_list = paginator.get_page(page)
+
+
+    return render(request,'Employer/employer_view_jobs.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'final_list':final_list})

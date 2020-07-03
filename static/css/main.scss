@@ -4,6 +4,7 @@
 }
 //variables
 $primary-color:#37474f;
+
 *,
 *::after,
 *::before {
@@ -21,7 +22,7 @@ body {
     font-family: "Lato", sans-serif;
     font-weight: 400;
     line-height: 1.5;
-    background-color:rgb(252,252,252);
+    background-color:rgb(250,250,250);
 }
 //  navbar
 .navbar-fixed nav{
@@ -42,6 +43,7 @@ body {
     margin-right:10rem !important;
   }
 }
+
 // Registration Form
 #id_current_city{
     display:inline-block;
