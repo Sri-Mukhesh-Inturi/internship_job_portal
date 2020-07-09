@@ -3,11 +3,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.http import HttpResponse
 from Accounts.models import User_type
-from Jobseeker.models import Skill_set
+from Jobseeker.models import *
 from django.contrib.auth.models import User
 from .models import Employer_basic, Job_post, Job_post_skill_set, Job_post_activity, Jobseeker_basic, Announcement, \
     Company
-from .forms import EmployerBasicForm, CompanyForm, JobPostForm
+from .forms import EmployerBasicForm, CompanyForm, JobPostForm,JobPostSkillSetForm
 from django.shortcuts import redirect
 from django.urls import reverse
 #for paginator
@@ -169,7 +169,7 @@ def employer_post_job(request, id):
                 formInstance.job_length = request.POST.get('job_length')
                 formInstance.city = request.POST.get('city')
                 formInstance.save()
-                return redirect(reverse('Employer:employer_profile'))
+                return redirect(reverse('Employer:employer_view_jobs'))
         else:
             job_post_form = JobPostForm(data=request.POST)
             if job_post_form.is_valid():
@@ -185,7 +185,7 @@ def employer_post_job(request, id):
                 target_object.min_experience = request.POST.get('min_experience')
                 target_object.is_work_from_home = request.POST.get('is_work_from_home')=='on'
                 target_object.save()
-                return redirect(reverse('Employer:employer_profile'))
+                return redirect(reverse('Employer:employer_view_jobs'))
 
     else:
         if id == 0:
@@ -210,7 +210,7 @@ def employer_post_job_crud(request, operation, id):
         target_object = Job_post.objects.get(pk=id)
         target_object.delete()
         print('\ndeleted successfully\n')
-        return redirect(reverse('Employer:employer_profile'))
+        return redirect(reverse('Employer:employer_view_jobs'))
     elif operation == 'edit':
         return employer_post_job(request, id)
 
@@ -237,11 +237,102 @@ def employer_view_jobs(request):
         final_dict[object]=skills
     final_dict_touple = final_dict.items()
     final_list = list(final_dict_touple)
-    print(final_list)
+
     #logic for paginator starts here
-    paginator = Paginator(final_list,1)
+    paginator = Paginator(final_list,5)
     page = request.GET.get('page')
     final_list = paginator.get_page(page)
+    return render(request,'Employer/employer_view_jobs.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'final_list':final_list,'paginator':paginator})
 
+def toggle_job_post_activity(request,id):
+    job_post_object = Job_post.objects.get(pk=id)
+    if job_post_object.is_active:
+        print('hello there')
+        job_post_object.is_active = False
+        job_post_object.save()
+    else:
+        job_post_object.is_active = True
+        job_post_object.save()
+    return redirect(reverse('Employer:employer_view_jobs'))
 
-    return render(request,'Employer/employer_view_jobs.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'final_list':final_list})
+def employer_view_job(request,id):
+    user_type_user = User_type.objects.get(user=request.user)
+    employer_basic_object, created = Employer_basic.objects.get_or_create(user=user_type_user)
+    need_update = 0  # this is for update profile notification
+    if created or employer_basic_object.description == 'none':
+        need_update = 1
+    job_post_object = Job_post.objects.get(pk=id)
+    job_post_skill_set_objects = Job_post_skill_set.objects.filter(job_post_id=job_post_object)
+    skill_set_array =[]
+    if job_post_skill_set_objects.count()>0:
+        for object in job_post_skill_set_objects:
+            skill_set_array.append(object.skill_set_id.skill_set_name)
+    job_post = (job_post_object,skill_set_array)
+    desc_list = job_post_object.job_description.split(".")
+    return render(request,'Employer/employer_view_job.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'job_post':job_post,'desc_list':desc_list})
+
+def job_post_update_skill_set(request,operation,id,name):
+    user_type_user = User_type.objects.get(user=request.user)
+    employer_basic_object,created= Employer_basic.objects.get_or_create(user=user_type_user)
+    need_update = 0  # this is for update profile notification
+    if created or employer_basic_object.description == 'none':
+        need_update = 1
+    #skill set objects skill array containing all the skill set names as list items used in the autocomplete javascript function
+    skill_set_objects = Skill_set.objects.all()
+    skills = []
+    for skill in skill_set_objects:
+        skills.append(skill.skill_set_name)
+    job_post_object = Job_post.objects.get(pk=id)
+    if request.method == "POST":
+        print('hello im in POST')
+        skill_set_form = JobPostSkillSetForm(data=request.POST)
+        if skill_set_form.is_valid():
+            print('Skill set form is valid \n')
+            skill_set_name = request.POST.get('skill_set_name')
+            skill_set_object, created = Skill_set.objects.get_or_create(defaults={'skill_set_name': skill_set_name},skill_set_name__iexact=skill_set_name)
+            redundant_objects =Job_post_skill_set.objects.filter(job_post_id=job_post_object,skill_set_id=skill_set_object)
+            if redundant_objects.count() > 0:
+                messages.error(request, "Skill already exists")
+                return redirect(reverse('Employer:job_post_update_skill_set', kwargs={'operation':operation,'id':id,'name':name}))
+            new_object = Job_post_skill_set.objects.create(job_post_id=job_post_object,skill_set_id=skill_set_object)
+            new_object.save()
+            return redirect(reverse('Employer:employer_view_job',kwargs={'id':id}))
+    if operation == 'delete':
+        target_skill_set_object = Skill_set.objects.get(skill_set_name=name)
+        job_post_skill_set_object = Job_post_skill_set.objects.filter(job_post_id=job_post_object).filter(skill_set_id=target_skill_set_object).first()
+        job_post_skill_set_object.delete()
+        return redirect(reverse('Employer:employer_view_job',kwargs={'id':id}))
+    elif operation == 'new':
+        skill_set_form = JobPostSkillSetForm
+        return render(request,'Employer/job_post_update_skill_set.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'operation':operation,'id':id,'name':name,'skills':skills,'skill_set_form':skill_set_form})
+
+def job_post_view_applications(request,id):
+    user_type_user = User_type.objects.get(user=request.user)
+    employer_basic_object,created= Employer_basic.objects.get_or_create(user=user_type_user)
+    need_update = 0  # this is for update profile notification
+    if created or employer_basic_object.description == 'none':
+        need_update = 1
+    job_post_object = Job_post.objects.get(pk=id)
+    job_post_activity_objects = Job_post_activity.objects.filter(job_post_id=job_post_object).order_by('-pk')
+    #logic for paginator starts here
+    paginator = Paginator(job_post_activity_objects,9)
+    page = request.GET.get('page')
+    job_post_activity_objects = paginator.get_page(page)
+    return render(request,'Employer/job_post_view_applications.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'applications':job_post_activity_objects,'paginator':paginator})
+
+def job_post_view_applications_full_profile(request,username):
+    #User_type Table Object
+    user_object = User.objects.get(username=username)
+    user_type_user = User_type.objects.get(user=user_object)
+    #Jobseeker_basic Table Object
+    jobseeker_basic_object = Jobseeker_basic.objects.get(user=user_type_user)
+    #Jobseeker Educational details
+    jobseeker_education_objects = Jobseeker_education.objects.filter(user=jobseeker_basic_object)
+    #Jobseeker Work Experience Details
+    jobseeker_experience_objects = Jobseeker_experience.objects.filter(user=jobseeker_basic_object)
+    #Jobseeker Skillset details
+    jobseeker_skill_set_objects = Jobseeker_skill_set.objects.filter(user=jobseeker_basic_object)
+    #Skillset objects
+    skill_set_objects = Skill_set.objects.all()
+    return render(request,'Employer/job_post_view_applications_full_profile.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'jobseeker_education_objects':jobseeker_education_objects,'jobseeker_experience_objects':jobseeker_experience_objects,'jobseeker_skill_set_objects':jobseeker_skill_set_objects,'skill_set_objects':skill_set_objects})
+

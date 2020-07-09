@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %} Apply for job {% endblock %}
+{% block content %}
+<div class="row employer_view_jobs_background">My Jobs</div>
+<div class="container employer_view_jobs_container">
+        <div class="row">
+            <div class="col s12 m8 offset-m2 l8 offset-l1 employer_view_jobs_container_item z-depth-1 hoverable">
+                    <div class="row employer_view_jobs_container_item_title flow-text">{{job_post.0.job_title}}</div>
+                {% if not job_post.0.is_company_name_hidden %}
+                    <div class="row employer_view_jobs_container_item_company_name flow-text truncate"><i class="material-icons tiny">group</i>&nbsp;{{job_post.0.posted_by_id.company.company_name}}</div>
+                {% endif %}
+                <div class="row employer_view_jobs_container_item_description">
+                    <div class="col s6 m5 l4"><i class="material-icons tiny">place</i>&nbsp;{{job_post.0.city}}</div>
+                    {% if job_post.0.min_salary %}
+                        {% if job_post.0.min_salary == job_post.0.max_salary %}
+                      <div class="col s6 m6 l6"><b>&#8377;</b>&nbsp;{{job_post.0.min_salary | intcomma }}</div>
+                        {% else %}
+                    <div class="col s6 m6 l6"><b>&#8377;</b>&nbsp;{{job_post.0.min_salary | intcomma }}-{{job_post.0.max_salary | intcomma}}</div>
+                    {% endif %}
+                    {% else %}
+                    <div class="col s10 m6 l6"><b>&#8377;</b>&nbsp;Not Specified</div>
+                    {% endif %}
+                    {% if job_post.0.min_salary %}
+                    <div class="col s10 m10 l10"><i class="material-icons tiny">work</i>&nbsp;Fresher Available</div>
+                    {% else %}
+                    <div class="col s10 m10 l10"><i class="material-icons tiny">work</i>&nbsp;{{job_post.0.min_experience}} yrs and above</div>
+                    {% endif %}
+                    {% if job_post.0.is_work_from_home %}
+                      <div class="col s10 m10 l10"><i class="material-icons tiny">home</i>&nbsp;Work From Home Available</div>
+                    {% else %}
+                      <div class="col s10 m10 l10"><i class="material-icons tiny">business_center</i>&nbsp;Walk-in</div>
+                    {% endif %}
+                    {% if job_post.0.job_length == "Full Time" %}
+                      <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Full Time</div>
+                    {% else %}
+                      <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Internship</div>
+                    {% endif %}
+
+
+                </div>
+
+                <div class="row employer_view_jobs_container_item_action">
+                    <div class="col s6 m3 l3 ">Status&nbsp;:&nbsp;{{status}}</div>
+                </div>
+            </div>
+        </div>
+
+
+
+    <div class="row">
+            <div class="col s12 m8 offset-m2 l8 offset-l1 employer_view_jobs_container_item z-depth-1 hoverable">
+                <div class="row employer_view_jobs_container_item_title flow-text">Job Description:</div>
+                <div class="row" style="margin-left:1rem;">
+                    <p>
+                        <ul>{% for line in desc_list %}{% if line|length > 6 %}<li style="list-style-type:square;">{{line}}</li>{% endif %}{% endfor %}</ul>
+                    </p>
+                </div>
+            </div>
+    </div>
+ {% if job_post.1 %}
+    <div class="row">
+            <div class="col s12 m8 offset-m2 l8 offset-l1 employer_view_jobs_container_item z-depth-1 hoverable">
+                <div class="row employer_view_jobs_container_item_title flow-text" style="margin-bottom:1.5rem;">Key Skills:&emsp;</div>
+                <div class="row employer_view_jobs_container_item_skills" style="margin-left:1rem;">
+                    <ul> {% for skill in job_post.1 %} <li style="padding:1rem;">{{skill}}&emsp;</li> {% endfor %}</ul>
+                </div>
+            </div>
+    </div>
+  {% endif %}
+        <div class="row">
+            <div class="col s12 m8 offset-m2 l8 offset-l1 employer_view_jobs_container_item z-depth-1 hoverable">
+                <div class="row employer_view_jobs_container_item_title flow-text">About Company:</div>
+                <div class="row" style="margin-left:1rem;">
+                    <p>
+                     {% if job_post.0.is_company_name_hidden or job_post.0.posted_by_id.company.company_description == 'none' %}
+                        Confidential
+                        {% else %}
+                            {{job_post.0.posted_by_id.company.company_description}}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+    </div>
+
+</div>
+{% endblock %}

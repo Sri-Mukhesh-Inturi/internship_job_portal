@@ -58,7 +58,7 @@ class Job_post_activity(models.Model):
     applied_date = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=10,default='pending')
     def __str__(self):
-        return self.job_post_id+self.status
+        return str(self.job_post_id)+'-'+str(self.applied_by_id)
 
 
 

@@ -4,7 +4,9 @@
 }
 //variables
 $primary-color:#37474f;
-
+$color-primary:#55c57a;
+$color-primary-light:#7ed56f;
+$color-primary-dark:#28b485;
 *,
 *::after,
 *::before {
@@ -172,4 +174,141 @@ body {
 }
 .job_description{
     height:30vh;
+}
+// EMPLOYER VIEW JOBS PAGE
+
+.employer_view_jobs{
+    &_background{
+        min-height:20vh;
+        width:100%;
+        background-color:#80d8ff;
+        color:white;
+        font-size:2rem;
+        font-weight:400;
+        text-align:center;
+        padding:1rem;
+
+    }
+    &_container{
+        position:relative;
+        min-height:inherit;
+        transform:translateY(-10vh);
+        &_item{
+            border-radius:5px;
+            min-height:30vh;
+            background-color:rgb(253,253,253);
+
+            &_title{
+                font-size:1.2rem;
+                font-weight:600;
+                padding-top:1rem;
+                padding-left:1rem;
+                height:4vh;
+            }
+            &_company_name{
+                font-size:1rem;
+                font-weight:400;
+                height:4.5vh;
+                padding-left:1rem;
+                margin-bottom:-0.02rem;
+            }
+            &_description{
+
+            }
+            &_skills{
+
+                ul{
+                    display:flex;
+                    flex-direction:row;
+                    justify-content:flex-start;
+                    margin-left:1rem;
+                    flex-wrap:wrap;
+                }
+                ul > li{
+                           margin-right:0.7rem;
+                           border:1px solid rgb(150,150,150);
+                           border-radius:50%;
+                           padding:0.2rem 0.3rem;
+                           font-size:0.9rem;
+                }
+            }
+        }
+        &_pagination{
+            margin-top:1rem;
+            width:100%;
+            min-height:5vh;
+
+
+        }
+    }
+
+}
+@media (max-width:500px){
+    .employer_view_jobs{
+        &_background{
+            height:15vh;
+        }
+        &_container{
+            &_item{
+                min-height:25vh;
+
+               }
+        }
+    }
+
+}
+//active class
+.pagination li.active{
+    background-color:#80d8ff;
+    color:white;
+}
+
+//for jobseeker index searchbar
+.jobseeker_index{
+    &_searchbar{
+        &_background{
+            height:35vh;
+            background-image:linear-gradient(90deg, #38a745 0%, #4cce5b 63%);
+            }
+        &_form{
+                height:6vh;
+            &_input{
+                height:inherit;
+                &:focus{
+                    outline:none;
+                }
+                &::placeholder{
+                    color:grey;
+                }
+            }
+
+            &_button{
+                height:inherit;
+                font-family:lato;
+                text-transform:capitalize;
+                font-size:1.3rem;
+            }
+        }
+
+    }
+
+
+}
+@media (max-width:800px){
+    .jobseeker_index{
+        &_searchbar{
+            &_background{
+                height:30vh;
+                background-image:linear-gradient(90deg, #38a745 0%, #4cce5b 63%);
+                }
+            &_form{
+                    height:4vh;
+                &_input{
+                    height:inherit;
+                }
+            }
+
+        }
+    }
+
 }

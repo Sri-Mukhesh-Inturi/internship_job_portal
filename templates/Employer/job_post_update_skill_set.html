@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Add Skill {% endblock %}
+{% block content %}
+      {% if messages %}
+   <div class="center-align">
+       {% for message in messages %}
+           <h5>{{ message }}</h5>
+       {% endfor %}
+   </div>
+   {% endif %}
+   {% if skill_set_form.errors %}
+       {% for field in skill_set_form %}
+           {% for error in field.errors %}
+                 <div class="center-align">
+                   <h5>{{error|escape}}<h5>
+                 </div>
+           {% endfor %}
+       {% endfor %}
+       {% for error in skill_set_form.non_field_errors %}
+       <div class="center-align">
+         <h5>{{error|escape}}<h5>
+       </div>
+       {% endfor %}
+   {% endif %}
+
+   <div class=" row container center-align" style="margin:auto;">
+   <form autocomplete="off" class="basic_form col s12 offset-s4" method="POST" name="skill_set_form" enctype="multipart/form-data" action="{% url 'Employer:job_post_update_skill_set' operation=operation id=id name=name %}">
+       {% csrf_token %}
+
+
+
+      <div class="row" style="margin-top:3rem;">
+        <div class="input-field col s8 m4 l3">
+            <input  type="text" name="skill_set_name" maxlength="30" required="" id="id_skill_set_name" class="autocomplete">
+         <label for="id_skill_set_name"><span>Skill Name</span></label>
+        </div>
+      </div>
+
+       <div class="row">
+           <div class="input-field col s4">
+               <button class="btn waves-effect waves-light" type="submit" name="submit">Submit</button>
+           </div>
+       </div>
+   </form>
+
+
+
+   </div>
+
+<script type="text/javascript">
+      $(document).ready(function(){
+    $('input.autocomplete').autocomplete({
+      data: {
+           {% for skill in skills %}
+           "{{skill}}":null,
+           {% endfor %}
+      },
+    });
+  });
+</script>
+
+
+{% endblock %}

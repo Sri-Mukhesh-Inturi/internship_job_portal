@@ -26,4 +26,3 @@ $(document).ready(function() {
  M.Range.init(array_of_dom_elements);
 
 
-// for autocomplete

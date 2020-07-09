@@ -35,6 +35,7 @@
       <ul class="right hide-on-med-and-down nav_active navbar_items">
           {% if request.user.is_authenticated %}
             {% if user_type.user_type_name == 'jobseeker' %}
+           <li><a href="{% url 'Jobseeker:jobseeker_view_jobs' %}">Applied Jobs</a></li>
         <li><a href="{% url 'Jobseeker:jobseeker_profile' %}">Profile{% if need_update %}<span class="btn-floating pulse new badge"></span>{% endif %}</a></li>
             {% elif user_type.user_type_name == 'employer' %}
           <li><a href="{% url 'Employer:post_job_crud' operation='new' id=0 %}">Post Job</a></li>
@@ -53,6 +54,7 @@
   <ul class="sidenav nav_active" id="mobile-demo">
           {% if request.user.is_authenticated %}
             {% if user_type.user_type_name == 'jobseeker' %}
+       <li><a href="{% url 'Jobseeker:jobseeker_view_jobs' %}">Applied Jobs</a></li>
         <li><a href="{% url 'Jobseeker:jobseeker_profile' %}">Profile{% if need_update %}<span class="btn-floating pulse new badge">1</span>{% endif %}</a></li>
             {% elif user_type.user_type_name == 'employer' %}
             <li><a href="{% url 'Employer:post_job_crud' operation='new' id=0 %}">Post Job</a></li>

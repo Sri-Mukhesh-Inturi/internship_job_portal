@@ -23,10 +23,10 @@
        </div>
        {% endfor %}
    {% endif %}
-        <div class="row">
-            <h2 class="heading left-align flow-text col s12 offset-s2">Post A Job with id {{id}}</h2>
+        <div class="row employer_view_jobs_background">
+            <h2 class="heading left-align flow-text col s12 offset-s2 white-text">Post A Job</h2>
        </div>
-   <div class="z-depth-1 white row container center-align" style="margin:auto;">
+   <div class="z-depth-1 white row container center-align" style="margin:auto;transform:translateY(-10vh);">
    <form class="basic_form col s12 offset-s1" method="POST" name="job_post_form" enctype="multipart/form-data" action="{% url 'Employer:employer_post_job' id=id %}">
        {% csrf_token %}
 

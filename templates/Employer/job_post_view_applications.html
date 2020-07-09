@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %} My Jobs {% endblock %}
+{% block content %}
+<div class="row employer_view_jobs_background">Candidates Applied</div>
+<div class="container employer_view_jobs_container">
+
+
+        <div class="row">
+             {% for application in applications %}
+                {% if application.status != "rejected" %}
+            <div class="col s12 m6 l4">
+              <div class="card large">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img class="activator img-responsiv" src="{{application.applied_by_id.profile_picture.url}}">
+                </div>
+
+                <div class="card-content">
+                  <span class="card-title activator capitalize grey-text text-darken-4">{{application.applied_by_id.user.user.first_name}}&nbsp;{{application.applied_by_id.user.user.last_name}}<i class="material-icons right">more_vert</i></span>
+                  <p><a class="btn" href="{% url 'Employer:job_post_view_applications_full_profile' username=application.applied_by_id.user.user.username %}">Full Profile</a></p>
+                </div>
+                <div class="card-reveal">
+                  <span class="card-title capitalize grey-text text-darken-4">{{application.applied_by_id.user.user.first_name}}&nbsp;{{application.applied_by_id.user.user.last_name}}<i class="material-icons right">close</i></span>
+                  <div>
+                      <p class="margin_top_1"><b>Description:</b><br>{{application.applied_by_id.description}}</p>
+                      <p class="margin_top_1"><b>Highest Education:</b><br>{{application.applied_by_id.highest_education}}</p>
+                      <p class="margin_top_1"><b>Salary Expectations/Charges:</b><br>Rs.{{application.applied_by_id.salary_expectation | intcomma}}</p>
+                      <p class="margin_top_1"><b>Phone number:</b>&nbsp;{{application.applied_by_id.user.phone_number}}</p>
+                      {% if application.applied_by_id.user.email %}
+                       <p class="margin_top_1"><b>Email:</b>&nbsp;&nbsp;<a href="mailto:{{application.applied_by_id.user.email}}">{{application.applied_by_id.user.user.email}}</a></p>
+                      {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+              {% endfor %}
+        </div>
+
+
+
+        {% if paginator.num_pages > 1 %}
+
+        <div class="row employer_view_jobs_container_pagination">
+
+          <ul class="pagination col s8 offset-s2 m6 offset-m3 l6 offset-l3">
+              {% if applications.has_previous %}
+                <li class="disabled"><a href="?page=1"><i class="material-icons" style="cursor:pointer;">first_page</i></a></li>
+                <li class="disabled"><a href="?page={{applications.previous_page_number}}"><i class="material-icons" style="cursor:pointer;">chevron_left</i></a></li>
+              {% endif %}
+              {% for num in applications.paginator.page_range %}
+                {% if applications.number == num %}
+                        <li class="active"><a href="?page={{num}}">{{num}}</a></li>
+                {% elif num > applications.number|add:'-3' and num < applications.number|add:'3' %}
+                            <li class="waves-effect"><a href="?page={{num}}">{{num}}</a></li>
+                {% endif %}
+              {% endfor %}
+
+              {% if applications.has_next %}
+              <li class="disabled "><a href="?page={{applications.next_page_number}}"><i class="material-icons" style="cursor:pointer;">chevron_right</i></a></li>
+                <li class="disabled"><a href="?page={{applications.paginator.num_pages}}"><i class="material-icons" style="cursor:pointer;">last_page</i></a></li>
+              {% endif %}
+
+          </ul>
+            </div>
+            {% endif %}
+</div>
+{% endblock %}

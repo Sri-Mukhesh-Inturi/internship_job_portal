@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% load humanize %}
-{% block title %} My Jobs {% endblock %}
+{% block title %}Applied Jobs{% endblock %}
 {% block content %}
-<div class="row employer_view_jobs_background">My Jobs</div>
+<div class="row employer_view_jobs_background">Applied Jobs</div>
 <div class="container employer_view_jobs_container">
 
     {% for job_post in final_list %}
@@ -51,18 +51,9 @@
                 </div>
                 {% endif %}
                 <div class="row employer_view_jobs_container_item_action">
-                    <div class="col s6 m3 l3 tooltipped" data-position="top" data-tooltip="View more information"><a href="{% url 'Employer:employer_view_job' id=job_post.0.id %}" class="btn btn-small">View Job</a></div>
-                    {% if job_post.0.is_active %}
-<!--                        <div class="col s10 m3 l2" style="transform:translateY(30%);margin-bottom:0.7rem;">Status&nbsp;:&nbsp;<span class="green-text">active</span></div>-->
-                         <div class="col s6 m3 l3 " style="margin-bottom:1rem;"><a href="{% url 'Employer:toggle_job_post_activity' id=job_post.0.id %}" class="btn btn-small tooltipped" data-position="top" data-tooltip="you will stop receiving applications">Deactivate Post</a></div>
-                    {% else %}
-                        <div class="col s6 m3 l3 "style="margin-bottom:1rem;"><a href="{% url 'Employer:toggle_job_post_activity' id=job_post.0.id %}" class="btn btn-small tooltipped" data-position="top" data-tooltip="you will start receiving applications">Activate Post</a></div>
-<!--                    <div class="col s10 m3 l2">Status&nbsp;:&nbsp;<span class="cyan-text">inactive</span></div>-->
-                    {% endif %}
-
-                     <div class="col s3 m2 offset-m1 l2" style="margin-bottom:1rem;"><a href="{% url 'Employer:post_job_crud' operation='edit' id=job_post.0.id %}" class="btn btn-floating btn-small tooltipped" data-position="top" data-tooltip="edit post"><i class="material-icons tiny cyan">edit</i></a></div>
-                     <div class="col s3 m2 l2"><a href="{% url 'Employer:post_job_crud' operation='delete' id=job_post.0.id %}" class="btn btn-floating btn-small tooltipped" data-position="top" data-tooltip="delete post"><i class="material-icons tiny pink lighten-1">delete</i></a></div>
-                    <div class="col s12 m12 l12 " ><a href="{% url 'Employer:job_post_view_applications' id=job_post.0.id %}" class="btn btn-small tooltipped" data-position="top" data-tooltip="View Applied Candidates">View Applications</a></div>
+                    <div style="margin-bottom:1rem;" class="col s6 m3 l3 " data-position="top" data-tooltip="View"><a href="{% url 'Jobseeker:jobseeker_view_job' id=job_post.0.id %}" class="btn btn-small">View</a></div>
+                    <div class="col s6 m3 l3 ">Status&nbsp;:&nbsp;<span class="capitalize">{{ status_dict|get_item:job_post.0 }}</span></div>
+                    {% if status_dict|get_item:job_post.0 == 'pending'  %}<div class="col s12 m12 l6 " data-position="top" data-tooltip="Cancel Application"><a href="{% url 'Jobseeker:jobseeker_cancel_application' id=job_post.0.id %}" class="btn btn-small">Cancel Application</a></div>{% endif %}
 
                 </div>
             </div>
@@ -75,20 +66,20 @@
 
           <ul class="pagination col s8 offset-s2 m6 offset-m3 l6 offset-l3">
               {% if final_list.has_previous %}
-                <li class="disabled"><a href="?page=1"><i class="material-icons" style="cursor:pointer;">first_page</i></a></li>
-                <li class="disabled"><a href="?page={{final_list.previous_page_number}}"><i class="material-icons" style="cursor:pointer;">chevron_left</i></a></li>
+                <li class="disabled"><a href="?page=1&searchword={{searchword}}&city={{city}}"><i class="material-icons" style="cursor:pointer;">first_page</i></a></li>
+                <li class="disabled"><a href="?page={{final_list.previous_page_number}}&searchword={{searchword}}&city={{city}}"><i class="material-icons" style="cursor:pointer;">chevron_left</i></a></li>
               {% endif %}
               {% for num in final_list.paginator.page_range %}
                 {% if final_list.number == num %}
-                        <li class="active"><a href="?page={{num}}">{{num}}</a></li>
+                        <li class="active"><a href="?page={{num}}&searchword={{searchword}}&city={{city}}">{{num}}</a></li>
                 {% elif num > final_list.number|add:'-3' and num < final_list.number|add:'3' %}
-                            <li class="waves-effect"><a href="?page={{num}}">{{num}}</a></li>
+                            <li class="waves-effect"><a href="?page={{num}}&searchword={{searchword}}&city={{city}}">{{num}}</a></li>
                 {% endif %}
               {% endfor %}
 
               {% if final_list.has_next %}
-              <li class="disabled "><a href="?page={{final_list.next_page_number}}"><i class="material-icons" style="cursor:pointer;">chevron_right</i></a></li>
-                <li class="disabled"><a href="?page={{final_list.paginator.num_pages}}"><i class="material-icons" style="cursor:pointer;">last_page</i></a></li>
+              <li class="disabled "><a href="?page={{final_list.next_page_number}}&searchword={{searchword}}&city={{city}}"><i class="material-icons" style="cursor:pointer;">chevron_right</i></a></li>
+                <li class="disabled"><a href="?page={{final_list.paginator.num_pages}}&searchword={{searchword}}&city={{city}}"><i class="material-icons" style="cursor:pointer;">last_page</i></a></li>
               {% endif %}
 
           </ul>

@@ -80,5 +80,14 @@ class JobPostForm(forms.ModelForm):
             raise forms.ValidationError("Please enter valid minimum salary")
         if max_salary < 0:
             raise forms.ValidationError("Please enter valid maximum salary")
+        if max_salary< min_salary:
+            raise forms.ValidationError("Max salary cannot be less than Min salary")
         if min_experience <0 or min_experience >30:
             raise forms.ValidationError("Please enter valid minimum experience")
+
+class JobPostSkillSetForm(forms.Form):
+    skill_set_name = forms.CharField(max_length=30)
+    def clean(self):
+        all_clean_data=super().clean()
+
+

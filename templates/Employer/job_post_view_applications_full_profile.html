@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %} Profile {% endblock %}
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <h3 class="heading left-align flow-text col s12">Basic profile information</h3>
+       </div>
+        <div class="row">
+            <div class="col s12 m6 l4">
+              <div class="card large">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img class="activator img-responsiv" src="{{jobseeker_basic.profile_picture.url}}">
+                </div>
+
+                <div class="card-content">
+                  <span class="card-title activator capitalize grey-text text-darken-4">{{user_type.user.first_name}}&nbsp;{{user_type.user.last_name}}<i class="material-icons right">more_vert</i></span>
+                  <p><a href="#">View Full Profile</a></p>
+                </div>
+                <div class="card-reveal">
+                  <span class="card-title capitalize grey-text text-darken-4">{{user_type.user.first_name}}&nbsp;{{user_type.user.last_name}}<i class="material-icons right">close</i></span>
+                  <div>
+                      <p class="margin_top_1"><b>Description:</b><br>{{jobseeker_basic.description}}</p>
+                      <p class="margin_top_1"><b>Highest Education:</b><br>{{jobseeker_basic.highest_education}}</p>
+                      <p class="margin_top_1"><b>Salary Expectations/Charges:</b><br>Rs.{{jobseeker_basic.salary_expectation | intcomma}}</p>
+                      <p class="margin_top_1"><b>Phone number:</b>&nbsp;{{user_type.phone_number}}</p>
+                      {% if user_type.user.email %}
+                       <p class="margin_top_1"><b>Email:</b>&nbsp;&nbsp;<a href="mailto:{{user_type.user.email}}">{{user_type.user.email}}</a></p>
+                      {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+
+<!--        for educational details-->
+        <div class="row">
+             <h3 class="heading left-align flow-text col s8">Educational Qualifications</h3>
+
+        </div>
+        <div class="row">
+            {% if not jobseeker_education_objects %}
+                 <h3 class="heading-secondary left-align flow-text col s12">The candidate has not added any educational details</h3>
+            {% else %}
+                <div class="row">
+                    {% for education in jobseeker_education_objects %}
+                        <div class="hover col s12 m6">
+                          <div class="card">
+                            <div class="card-content">
+                              <span class="card-title">{{education.degree_type}}&emsp;CGPA&nbsp;:&nbsp;{{education.cgpa}}&nbsp;/&nbsp;10</span>
+                              <div>
+                                  <p class="margin_top_1"><b>Course:</b>&emsp;{{education.degree_name}}</p><br>
+                                  <p class="margin_top_1"><b>Institute:</b>&emsp;{{education.institute}}</p><br>
+                                  <p class="margin_top_1"><b>Start Date:</b>&emsp;{{education.start_date}}</p><br>
+                                  <p class="margin_top_1"><b>End Date:</b>&emsp;&nbsp;{{education.end_date}}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+<!--        for jobseeker experience details-->
+        <div class="row">
+             <h3 class="heading left-align flow-text col s8">Experience Details</h3>
+        </div>
+        <div class="row">
+            {% if not jobseeker_experience_objects %}
+                 <h3 class="heading-secondary left-align flow-text col s12">The candidate has not added any experience details (Fresher)</h3>
+            {% else %}
+                <div class="row">
+                    {% for experience in jobseeker_experience_objects %}
+                        <div class="hover col s12 m6">
+                          <div class="card">
+                            <div class="card-content">
+                              <span class="card-title">{{experience.job_title}}&nbsp;at &nbsp;{{experience.company_name}}</span>
+                              <div>
+                                  <p class="margin_top_1"><b>Job Type:</b>&emsp;{{experience.job_type}}</p><br>
+                                  <p class="margin_top_1"><b>Job location City:</b>&emsp;{{experience.job_location_city}}</p><br>
+                                  <p class="margin_top_1"><b>Job Description:</b>&emsp;{{experience.job_description}}</p><br>
+                                  <p class="margin_top_1"><b>Start Date:</b>&emsp;{{experience.start_date}}</p><br>
+                                  <p class="margin_top_1"><b>End Date:</b>&emsp;&nbsp;{{experience.end_date}}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+<!--        jobseeker skill set details-->
+        <div class="row">
+             <h3 class="heading left-align flow-text col s8">Key Skills</h3>
+        </div>
+        <div class="row">
+            {% if not jobseeker_skill_set_objects %}
+                 <h3 class="heading-secondary left-align flow-text col s12">The candidate has not added any Skills</h3>
+            {% else %}
+                <div class="row">
+                    {% for skill_set in jobseeker_skill_set_objects %}
+                        <div class="hover col s6 m3">
+                          <div class="card">
+                            <div class="card-content">
+                              <span class="card-title">{{skill_set.skill_set_id.skill_set_name}}&nbsp;<br> Level: &nbsp;{{skill_set.skill_level}}&nbsp;/&nbsp;10</span>
+                            </div>
+
+                          </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+
+    </div>
+
+{% endblock %}
