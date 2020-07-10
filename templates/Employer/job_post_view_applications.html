@@ -9,16 +9,32 @@
 
         <div class="row">
              {% for application in applications %}
-                {% if application.status != "rejected" %}
+
             <div class="col s12 m6 l4">
               <div class="card large">
                 <div class="card-image waves-effect waves-block waves-light">
-                  <img class="activator img-responsiv" src="{{application.applied_by_id.profile_picture.url}}">
+                  <img class="activator img-responsive tooltipped" data-position="top" data-tooltip="Click to see more details" src="{{application.applied_by_id.profile_picture.url}}">
                 </div>
 
                 <div class="card-content">
                   <span class="card-title activator capitalize grey-text text-darken-4">{{application.applied_by_id.user.user.first_name}}&nbsp;{{application.applied_by_id.user.user.last_name}}<i class="material-icons right">more_vert</i></span>
-                  <p><a class="btn" href="{% url 'Employer:job_post_view_applications_full_profile' username=application.applied_by_id.user.user.username %}">Full Profile</a></p>
+                  <div class="row">
+                      <a class="btn capitalize" style="margin-bottom:1rem;margin-right:0.4rem;" href="{% url 'Employer:job_post_view_applications_full_profile' username=application.applied_by_id.user.user.username %}">Full Profile</a>
+                      {% if application.applied_by_id.resume %}
+                      <a class="btn capitalize " style="margin-bottom:1rem;" href="{{application.applied_by_id.resume.url}}" download>Download Resume</a>
+                      {% endif %}
+                  </div>
+                    <div class="row">
+                        {% if application.status == 'pending' %}
+                        <a class="btn capitalize tooltipped green" data-position="top" data-tooltip="Select Candidate" style="margin-bottom:1rem;margin-right:0.4rem;" href="{% url 'Employer:job_post_select_candidate' id=application.job_post_id.id username=application.applied_by_id.user.user.username %}">Select</a>
+                       <a class="btn capitalize tooltipped red" data-position="top" data-tooltip="Reject Candidate" style="margin-bottom:1rem;margin-right:0.4rem;" href="{% url 'Employer:job_post_reject_candidate' id=application.job_post_id.id username=application.applied_by_id.user.user.username %}">Reject</a>
+                        {% elif application.status == 'selected' %}
+                            Selected
+
+                        {% elif application.status == 'rejected' %}
+                            rejected
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="card-reveal">
                   <span class="card-title capitalize grey-text text-darken-4">{{application.applied_by_id.user.user.first_name}}&nbsp;{{application.applied_by_id.user.user.last_name}}<i class="material-icons right">close</i></span>
@@ -34,7 +50,7 @@
                 </div>
               </div>
             </div>
-            {% endif %}
+
               {% endfor %}
         </div>
 

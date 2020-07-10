@@ -358,6 +358,7 @@ def jobseeker_apply_job(request,id):
         need_update = 1
         return redirect(reverse('Jobseeker:jobseeker_profile'))
     job_post_object = Job_post.objects.get(pk=id)
+    job_post_object.notification =True
     application_object = Job_post_activity.objects.create(job_post_id=job_post_object,applied_by_id=jobseeker_basic_object)
     application_object.save()
     return redirect(reverse('Jobseeker:jobseeker_view_jobs'))
@@ -374,6 +375,7 @@ def jobseeker_view_jobs(request):
     need_update = 0  # this is for update profile notification
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
+        return redirect(reverse('Jobseeker:jobseeker_profile'))
     job_post_activity_objects = Job_post_activity.objects.filter(applied_by_id=jobseeker_basic_object).order_by('-pk')
     job_post_objects=[]
     status_dict ={}
@@ -434,6 +436,7 @@ def jobseeker_cancel_application(request,id):
         need_update = 1
         return redirect(reverse('Jobseeker:jobseeker_profile'))
     job_post_object = Job_post.objects.get(pk=id)
+    job_post_object.notification=False
     application_object = Job_post_activity.objects.get(job_post_id=job_post_object,applied_by_id=jobseeker_basic_object)
     application_object.delete()
     return redirect(reverse('Jobseeker:jobseeker_view_jobs'))

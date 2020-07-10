@@ -25,7 +25,7 @@
    {% endif %}
 
    <div class=" row container center-align" style="margin:auto;">
-   <form autocomplete="off" class="basic_form col s12 offset-s4" method="POST" name="skill_set_form" enctype="multipart/form-data" action="{% url 'Jobseeker:jobseeker_update_skill_set' id=id %}">
+   <form autocomplete="off" class="basic_form col s12 offset-s3" method="POST" name="skill_set_form" enctype="multipart/form-data" action="{% url 'Jobseeker:jobseeker_update_skill_set' id=id %}">
        {% csrf_token %}
 
 <!--         <div class="row">-->

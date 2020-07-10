@@ -38,7 +38,7 @@ class Job_post(models.Model):
     max_salary = models.IntegerField()
     min_experience = models.IntegerField(default=0)
     city = models.CharField(max_length=30,default="Not Selected")
-
+    notification = models.BooleanField(default=False)
     def __str__(self):
         return self.job_title
 
@@ -57,6 +57,7 @@ class Job_post_activity(models.Model):
     applied_by_id = models.ForeignKey(Jobseeker_basic,on_delete=models.CASCADE)
     applied_date = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=10,default='pending')
+    notification = models.BooleanField(default=False)
     def __str__(self):
         return str(self.job_post_id)+'-'+str(self.applied_by_id)
 

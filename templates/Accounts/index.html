@@ -2,8 +2,39 @@
 {% load static %}
 {% block title %} Welcome to FindMyJob {% endblock %}
 {% block content %}
-
-    <div>
-          <h3 class="center-align">Common Homepage for both Job Seeker and Employer</h3>
+<!--push and pull-->
+<section class="container section" id="photos" style="padding-top:4vw;padding-bottom:4vw;">
+  <div class="row">
+    <div class="col s12 m8 offset-m1 l6 offset-l4 " style="margin-bottom:1.5rem;"><h4 class="primary-text">Our Services</h4></div>
+    <div class="col s12 l4">
+      <video class="responsive-video" autoplay loop muted plays-inline>
+        <source src="{% static 'images/video (1).mp4' %}" type="video/mp4">
+      </video>
     </div>
+    <div class="col s12 l6 offset-l1">
+      <h4 class="capitalize primary-text">Find Jobs</h4>
+      <p class="flow-text">Based on Skills , Designation , Companies and apply for them (Jobseekers)</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 l4 offset-l1 push-l7">
+      <video class="responsive-video" autoplay loop muted plays-inline>
+        <source src="{% static 'images/shaking_hands.mp4' %}" type="video/mp4">
+      </video>
+    </div>
+    <div class="col s12 l6 offset-l1 pull-l5 right-align">
+      <h4 class="primary-text">Hire Candidates</h4>
+      <p class="flow-text">Post Jobs, search candidates, download resumes (employers/companies)</p>
+    </div>
+  </div>
+  <div class="row">
+        <div class="col s12 m8 offset-m1 l7 offset-l4 " style="margin-bottom:1.5rem;">
+          <h4 class="primary-text">What are you waiting for?</h4>
+        </div>
+          <div class="col s12 m6 l7 offset-l2 center-align">
+            <a class="btn" href="{% url 'Accounts:user_login' %}">Login</a>
+          <a class="btn" href="{% url 'Accounts:register' %}">Register</a>
+        </div>
+  </div>
+</section>
 {% endblock %}

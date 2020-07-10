@@ -16,18 +16,18 @@
                 </div>
 
                 <div class="card-content">
-                  <span class="card-title activator capitalize grey-text text-darken-4">{{user_type.user.first_name}}&nbsp;{{user_type.user.last_name}}<i class="material-icons right">more_vert</i></span>
-                  <p><a href="#">View Full Profile</a></p>
+                  <span class="card-title activator capitalize grey-text text-darken-4">{{user_type_jobseeker.user.first_name}}&nbsp;{{user_type_jobseeker.user.last_name}}<i class="material-icons right">more_vert</i></span>
+
                 </div>
                 <div class="card-reveal">
-                  <span class="card-title capitalize grey-text text-darken-4">{{user_type.user.first_name}}&nbsp;{{user_type.user.last_name}}<i class="material-icons right">close</i></span>
+                  <span class="card-title capitalize grey-text text-darken-4">{{user_type_jobseeker.user.first_name}}&nbsp;{{user_type_jobseeker.user.last_name}}<i class="material-icons right">close</i></span>
                   <div>
                       <p class="margin_top_1"><b>Description:</b><br>{{jobseeker_basic.description}}</p>
                       <p class="margin_top_1"><b>Highest Education:</b><br>{{jobseeker_basic.highest_education}}</p>
                       <p class="margin_top_1"><b>Salary Expectations/Charges:</b><br>Rs.{{jobseeker_basic.salary_expectation | intcomma}}</p>
                       <p class="margin_top_1"><b>Phone number:</b>&nbsp;{{user_type.phone_number}}</p>
-                      {% if user_type.user.email %}
-                       <p class="margin_top_1"><b>Email:</b>&nbsp;&nbsp;<a href="mailto:{{user_type.user.email}}">{{user_type.user.email}}</a></p>
+                      {% if user_type_jobseeker.user.email %}
+                       <p class="margin_top_1"><b>Email:</b>&nbsp;&nbsp;<a href="mailto:{{user_type_jobseeker.email}}">{{user_type_jobseeker.user.email}}</a></p>
                       {% endif %}
                   </div>
                 </div>
@@ -43,7 +43,7 @@
         </div>
         <div class="row">
             {% if not jobseeker_education_objects %}
-                 <h3 class="heading-secondary left-align flow-text col s12">The candidate has not added any educational details</h3>
+                 <h5 class=" left-align  col s12">The candidate has not added any educational details</h5>
             {% else %}
                 <div class="row">
                     {% for education in jobseeker_education_objects %}
@@ -70,7 +70,7 @@
         </div>
         <div class="row">
             {% if not jobseeker_experience_objects %}
-                 <h3 class="heading-secondary left-align flow-text col s12">The candidate has not added any experience details (Fresher)</h3>
+                 <h5 class=" left-align  col s12">The candidate has not added any experience details (Fresher)</h5>
             {% else %}
                 <div class="row">
                     {% for experience in jobseeker_experience_objects %}
@@ -98,7 +98,7 @@
         </div>
         <div class="row">
             {% if not jobseeker_skill_set_objects %}
-                 <h3 class="heading-secondary left-align flow-text col s12">The candidate has not added any Skills</h3>
+                 <h5 class=" left-align  col s12">The candidate has not added any Skills</h5>
             {% else %}
                 <div class="row">
                     {% for skill_set in jobseeker_skill_set_objects %}

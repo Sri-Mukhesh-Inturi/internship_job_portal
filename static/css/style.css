@@ -18,11 +18,31 @@ body {
   line-height: 1.5;
   background-color: #fafafa; }
 
+.btn {
+  background-color: #28a745 !important; }
+
+.primary-text {
+  color: #28a745; }
+
+.primary-background {
+  background-color: linear-gradient(90deg, #38a745 0%, #4cce5b 63%) !important; }
+
 .navbar-fixed nav {
-  width: 99%; }
+  width: 100%; }
 
 .nav-wrapper {
-  background-color: #37474f; }
+  background-color: white; }
+  .nav-wrapper a {
+    color: black; }
+
+.brand-logo {
+  height: 64px; }
+  .brand-logo img {
+    transform: scale(2);
+    height: 64px; }
+
+.active a {
+  color: #28a745; }
 
 .navbar-fixed {
   top: 0px; }
@@ -45,7 +65,7 @@ body {
 
 .page-footer {
   width: 100%;
-  background-color: #37474f; }
+  background-image: linear-gradient(90deg, #38a745 0%, #4cce5b 63%); }
 
 .content {
   min-height: 60vh;
@@ -100,7 +120,7 @@ body {
   text-transform: capitalize;
   font-weight: 700;
   display: inline-block;
-  background-image: linear-gradient(to right, #37474f, #37474f);
+  background-image: linear-gradient(90deg, #38a745 0%, #4cce5b 63%);
   -webkit-background-clip: text;
   color: transparent;
   letter-spacing: .2rem;
@@ -113,7 +133,7 @@ body {
   text-transform: capitalize;
   font-weight: 400;
   display: inline-block;
-  background-image: linear-gradient(to right, #37474f, #37474f);
+  background-image: linear-gradient(to right, linear-gradient(90deg, #38a745 0%, #4cce5b 63%), linear-gradient(90deg, #38a745 0%, #4cce5b 63%));
   -webkit-background-clip: text;
   color: transparent;
   letter-spacing: .1rem;
@@ -144,7 +164,7 @@ body {
 .employer_view_jobs_background {
   min-height: 20vh;
   width: 100%;
-  background-color: #80d8ff;
+  background-image: linear-gradient(90deg, #38a745 0%, #4cce5b 63%);
   color: white;
   font-size: 2rem;
   font-weight: 400;
@@ -195,12 +215,14 @@ body {
     min-height: 25vh; } }
 
 .pagination li.active {
-  background-color: #80d8ff;
+  background-color: #28a745;
   color: white; }
 
 .jobseeker_index_searchbar_background {
+  margin-bottom: 60vh;
   height: 35vh;
-  background-image: linear-gradient(90deg, #38a745 0%, #4cce5b 63%); }
+  background-image: linear-gradient(90deg, #38a745 0%, #4cce5b 63%);
+  backdrop-filter: blur(0.8); }
 
 .jobseeker_index_searchbar_form {
   height: 6vh; }

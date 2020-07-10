@@ -2,6 +2,43 @@
 {% load static %}
 {% block title %} Home {% endblock %}
 {% block content %}
-  <div>  <h3 class="flow-text center-align">Personalised Home Page for {{request.user.first_name}} and he is {{user_type.user_type_name}}.I should design accordingly</h3></div>
+   <div class="row jobseeker_index_searchbar_background ">
+      <div class="row"><h3 class="white-text flow-text col s4  m3 offset-m1 l3 offset-l3">Search Candidates</h3></div>
+      <form action="{% url 'Employer:employer_search' %}" method="get" class="col s12 m10 offset-m1 l8 offset-l3 row  jobseeker_index_searchbar_form ">
+         <span class="input-field" style="height:inherit;"><input type="text browser-default" required class="col s5 m6 l5 jobseeker_index_searchbar_form_input autocomplete" id="skill_field" placeholder="Search Candidates by Skills , Designation" name="searchword"></span>
+         <span class="input-field" style="height:inherit;"><input type="text browser-default" class="col s4 m4 l2 jobseeker_index_searchbar_form_input autocomplete" id="city_field" placeholder="City" name="city"></span>
+         <button class="col btn waves-effect waves-light btn-medium jobseeker_index_searchbar_form_button" type="submit" name="submit">Search</button>
+
+      </form>
+
+
+   </div>
+
+
+
+
+
+
+<script type="text/javascript">
+      $(document).ready(function(){
+    $('#skill_field').autocomplete({
+      data: {
+           {% for skill in skills %}
+           "{{skill}}":null,
+           {% endfor %}
+           {% for designation in designations %}
+           "{{designation}}":null,
+           {% endfor %}
+      },
+    });
+    $('#city_field').autocomplete({
+      data: {
+           {% for city in cities %}
+           "{{city}}":null,
+           {% endfor %}
+      },
+    });
+  });
+</script>
 
 {% endblock %}

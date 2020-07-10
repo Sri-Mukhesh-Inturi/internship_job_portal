@@ -3,7 +3,12 @@
 {% load humanize %}
 {% block title %}Search Results{% endblock %}
 {% block content %}
-<div class="row employer_view_jobs_background">Search Results for {{searchword}}</div>
+{%if final_list %}
+<div class="row employer_view_jobs_background">Search Results for {{searchword}} Jobs</div>
+{% else %}
+<div class="row employer_view_jobs_background">Sorry we could'nt find results for {{searchword}}</div>
+{% endif %}
+
 <div class="container employer_view_jobs_container">
 
     {% for job_post in final_list %}

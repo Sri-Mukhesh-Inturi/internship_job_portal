@@ -3,7 +3,11 @@
 {% load humanize %}
 {% block title %}Applied Jobs{% endblock %}
 {% block content %}
+{% if final_list %}
 <div class="row employer_view_jobs_background">Applied Jobs</div>
+{% else %}
+<div class="row employer_view_jobs_background">You have'nt applied for any job</div>
+{% endif %}
 <div class="container employer_view_jobs_container">
 
     {% for job_post in final_list %}

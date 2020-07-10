@@ -17,17 +17,20 @@
         <div class="row">
             <h3 class="heading left-align flow-text col s12">This is how your profile appears to employers</h3>
        </div>
+
+
+
         <div class="row">
             <div class="col s12 m6 l4">
               <div class="card large">
                 <div class="card-image waves-effect waves-block waves-light">
-                  <img class="activator img-responsiv" src="{{jobseeker_basic.profile_picture.url}}">
-                    <a href="{% url 'Jobseeker:jobseeker_update_profile_basic' %}"  class="btn-floating btn-floating_1 halfway-fab waves-effect waves-light red tooltipped" data-position="right" data-tooltip="edit basic details"><i class="material-icons">edit</i></a>
+                  <img class="activator img-responsive tooltipped" data-position="top" data-tooltip="click to see more details" src="{{jobseeker_basic.profile_picture.url}}">
+                    <a href="{% url 'Jobseeker:jobseeker_update_profile_basic' %}"  class="btn-floating btn-floating_1 halfway-fab waves-effect waves-light red tooltipped" data-position="right" data-tooltip="edit basic details"><i class="material-icons green">edit</i></a>
                 </div>
 
                 <div class="card-content">
                   <span class="card-title activator capitalize grey-text text-darken-4">{{user_type.user.first_name}}&nbsp;{{user_type.user.last_name}}<i class="material-icons right">more_vert</i></span>
-                  <p><a href="#">View Full Profile</a></p>
+                    <p class=" activator">Click to see more details</p>
                 </div>
                 <div class="card-reveal">
                   <span class="card-title capitalize grey-text text-darken-4">{{user_type.user.first_name}}&nbsp;{{user_type.user.last_name}}<i class="material-icons right">close</i></span>
@@ -49,12 +52,12 @@
 <!--        for educational details-->
         <div class="row">
              <h3 class="heading left-align flow-text col s8">Your Educational Qualifications</h3>
-            <a style="transform:translateY(50%);" href="{% url 'Jobseeker:education_crud' operation='new' id=0 %}"  class=" btn-floating  waves-effect waves-light red tooltipped" data-position="right" data-tooltip="Add New Education Details"><i class="material-icons">add</i></a>
+            <a style="transform:translateY(50%);" href="{% url 'Jobseeker:education_crud' operation='new' id=0 %}"  class=" btn-floating  waves-effect waves-light red tooltipped" data-position="right" data-tooltip="Add New Education Details"><i class="material-icons green">add</i></a>
 
         </div>
         <div class="row">
             {% if not jobseeker_education_objects %}
-                 <h3 class="heading-secondary left-align flow-text col s12">You have not added any educational details</h3>
+                 <h5 class=" left-align  col s12">You have not added any educational details</h5>
             {% else %}
                 <div class="row">
                     {% for education in jobseeker_education_objects %}
@@ -71,7 +74,7 @@
                             </div>
                             <div class="card-action">
                               <a  class="waves-effect waves-light btn " href="{% url 'Jobseeker:education_crud' operation='edit' id=education.id  %}"><i class="material-icons left">edit</i>Edit</a> &emsp;
-                              <a href="{% url 'Jobseeker:education_crud' operation='delete' id=education.id %}" class="waves-effect waves-light btn red lighten-1"><i class="material-icons left">delete</i>Delete</a>
+                              <a href="{% url 'Jobseeker:education_crud' operation='delete' id=education.id %}" class="waves-effect waves-light btn pink lighten-1"><i class="material-icons left ">delete</i>Delete</a>
                             </div>
                           </div>
                         </div>
@@ -82,11 +85,11 @@
 <!--        for jobseeker experience details-->
         <div class="row">
              <h3 class="heading left-align flow-text col s8">Your Experience Details</h3>
-            <a style="transform:translateY(50%);" href="{% url 'Jobseeker:experience_crud' operation='new' id=0 %}"  class=" btn-floating  waves-effect waves-light red tooltipped" data-position="right" data-tooltip="Add New Experience Details"><i class="material-icons">add</i></a>
+            <a style="transform:translateY(50%);" href="{% url 'Jobseeker:experience_crud' operation='new' id=0 %}"  class=" btn-floating  waves-effect waves-light red tooltipped" data-position="right" data-tooltip="Add New Experience Details"><i class="material-icons green">add</i></a>
         </div>
         <div class="row">
             {% if not jobseeker_experience_objects %}
-                 <h3 class="heading-secondary left-align flow-text col s12">You have not added any experience details (Fresher)</h3>
+                 <h5 class="left-align flow-text col s12">You have not added any experience details (Fresher)</h5>
             {% else %}
                 <div class="row">
                     {% for experience in jobseeker_experience_objects %}
@@ -104,7 +107,7 @@
                             </div>
                             <div class="card-action">
                               <a  class="waves-effect waves-light btn " href="{% url 'Jobseeker:experience_crud' operation='edit' id=experience.id  %}"><i class="material-icons left">edit</i>Edit</a> &emsp;
-                              <a href="{% url 'Jobseeker:experience_crud' operation='delete' id=experience.id %}" class="waves-effect waves-light btn red lighten-1"><i class="material-icons left">delete</i>Delete</a>
+                              <a href="{% url 'Jobseeker:experience_crud' operation='delete' id=experience.id %}" class="waves-effect waves-light btn pink lighten-1"><i class="material-icons left">delete</i>Delete</a>
                             </div>
                           </div>
                         </div>
@@ -115,21 +118,21 @@
 <!--        jobseeker skill set details-->
         <div class="row">
              <h3 class="heading left-align flow-text col s8">Your Skills</h3>
-            <a style="transform:translateY(50%);" href="{% url 'Jobseeker:skill_set_crud' operation='new' id=0 %}"  class=" btn-floating  waves-effect waves-light red tooltipped" data-position="right" data-tooltip="Add Skill"><i class="material-icons">add</i></a>
+            <a style="transform:translateY(50%);" href="{% url 'Jobseeker:skill_set_crud' operation='new' id=0 %}"  class=" btn-floating  waves-effect waves-light red tooltipped" data-position="right" data-tooltip="Add Skill"><i class="material-icons green">add</i></a>
         </div>
         <div class="row">
             {% if not jobseeker_skill_set_objects %}
-                 <h3 class="heading-secondary left-align flow-text col s12">You have not added any Skills</h3>
+                 <h5 class=" left-align flow-text col s12">You have not added any Skills</h5>
             {% else %}
                 <div class="row">
                     {% for skill_set in jobseeker_skill_set_objects %}
-                        <div class="hover col s6 m3">
+                        <div class="hover col s12 m5 l6">
                           <div class="card">
                             <div class="card-content">
-                              <span class="card-title">{{skill_set.skill_set_id.skill_set_name}}&nbsp;<br> Level: &nbsp;{{skill_set.skill_level}}&nbsp;/&nbsp;10</span>
+                              <span class="card-title flow-text ">{{skill_set.skill_set_id.skill_set_name}}&nbsp;<br> Level: &nbsp;{{skill_set.skill_level}}&nbsp;/&nbsp;10</span>
                             </div>
                             <div class="card-action">
-                              <a href="{% url 'Jobseeker:skill_set_crud' operation='delete' id=skill_set.id %}" class="waves-effect waves-light btn red lighten-1"><i class="material-icons left">delete</i>Delete</a>
+                              <a href="{% url 'Jobseeker:skill_set_crud' operation='delete' id=skill_set.id %}" class="waves-effect waves-light btn pink lighten-1"><i class="material-icons left">delete</i>Delete</a>
                             </div>
                           </div>
                         </div>

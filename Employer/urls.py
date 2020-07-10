@@ -13,6 +13,9 @@ urlpatterns = [
     path('employer_view_job/<int:id>/',views.employer_view_job,name="employer_view_job"),
     path('job_post_update_skill_set/<str:operation>/<int:id>/<str:name>',views.job_post_update_skill_set,name="job_post_update_skill_set"),
     path('job_post_view_applications/<int:id>',views.job_post_view_applications,name="job_post_view_applications"),
-    path('job_post_view_applications_full_profile/<str:username>',views.job_post_view_applications_full_profile,name="job_post_view_applications_full_profile")
+    path('job_post_view_applications_full_profile/<str:username>',views.job_post_view_applications_full_profile,name="job_post_view_applications_full_profile"),
+    path('job_post_select_candidate/<int:id>/<str:username>',views.job_post_select_candidate,name="job_post_select_candidate"),
+    path('job_post_reject_candidate/<int:id>/<str:username>',views.job_post_reject_candidate,name="job_post_reject_candidate"),
+    path('employer_search',views.employer_search,name="employer_search"),
 
 ]

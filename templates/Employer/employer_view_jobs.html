@@ -3,7 +3,7 @@
 {% load humanize %}
 {% block title %} My Jobs {% endblock %}
 {% block content %}
-<div class="row employer_view_jobs_background">My Jobs</div>
+<div class="row employer_view_jobs_background">My Jobs {% if not final_list %}(0){% endif %}</div>
 <div class="container employer_view_jobs_container">
 
     {% for job_post in final_list %}

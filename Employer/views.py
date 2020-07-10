@@ -5,14 +5,14 @@ from django.http import HttpResponse
 from Accounts.models import User_type
 from Jobseeker.models import *
 from django.contrib.auth.models import User
-from .models import Employer_basic, Job_post, Job_post_skill_set, Job_post_activity, Jobseeker_basic, Announcement, \
-    Company
+from .models import Employer_basic, Job_post, Job_post_skill_set, Job_post_activity, Jobseeker_basic, Announcement,Company
 from .forms import EmployerBasicForm, CompanyForm, JobPostForm,JobPostSkillSetForm
 from django.shortcuts import redirect
 from django.urls import reverse
+from Accounts.sample import new_cities,new_job_categories
 #for paginator
 from django.core.paginator import Paginator
-
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 # Create your views here.
 def employer_home(request):
     user_type_user = User_type.objects.get(user=request.user)
@@ -20,8 +20,11 @@ def employer_home(request):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
-    return render(request, 'Employer/employer_index.html',
-                  {'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update})
+    skill_set_objects = Skill_set.objects.all()
+    skills = []
+    for skill in skill_set_objects:
+        skills.append(skill.skill_set_name)
+    return render(request, 'Employer/employer_index.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'skills':skills,'designations':new_job_categories,'cities':new_cities})
 
 
 def employer_profile(request):
@@ -313,7 +316,7 @@ def job_post_view_applications(request,id):
     if created or employer_basic_object.description == 'none':
         need_update = 1
     job_post_object = Job_post.objects.get(pk=id)
-    job_post_activity_objects = Job_post_activity.objects.filter(job_post_id=job_post_object).order_by('-pk')
+    job_post_activity_objects = Job_post_activity.objects.filter(job_post_id=job_post_object).exclude(status='rejected').order_by('-pk')
     #logic for paginator starts here
     paginator = Paginator(job_post_activity_objects,9)
     page = request.GET.get('page')
@@ -321,11 +324,16 @@ def job_post_view_applications(request,id):
     return render(request,'Employer/job_post_view_applications.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'applications':job_post_activity_objects,'paginator':paginator})
 
 def job_post_view_applications_full_profile(request,username):
+    user_type_user = User_type.objects.get(user=request.user)
+    employer_basic_object,created= Employer_basic.objects.get_or_create(user=user_type_user)
+    need_update = 0  # this is for update profile notification
+    if created or employer_basic_object.description == 'none':
+        need_update = 1
     #User_type Table Object
     user_object = User.objects.get(username=username)
-    user_type_user = User_type.objects.get(user=user_object)
+    user_type_jobseeker = User_type.objects.get(user=user_object)
     #Jobseeker_basic Table Object
-    jobseeker_basic_object = Jobseeker_basic.objects.get(user=user_type_user)
+    jobseeker_basic_object = Jobseeker_basic.objects.get(user=user_type_jobseeker)
     #Jobseeker Educational details
     jobseeker_education_objects = Jobseeker_education.objects.filter(user=jobseeker_basic_object)
     #Jobseeker Work Experience Details
@@ -334,5 +342,66 @@ def job_post_view_applications_full_profile(request,username):
     jobseeker_skill_set_objects = Jobseeker_skill_set.objects.filter(user=jobseeker_basic_object)
     #Skillset objects
     skill_set_objects = Skill_set.objects.all()
-    return render(request,'Employer/job_post_view_applications_full_profile.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'jobseeker_education_objects':jobseeker_education_objects,'jobseeker_experience_objects':jobseeker_experience_objects,'jobseeker_skill_set_objects':jobseeker_skill_set_objects,'skill_set_objects':skill_set_objects})
+    return render(request,'Employer/job_post_view_applications_full_profile.html',{'jobseeker_basic':jobseeker_basic_object,'user_type_jobseeker':user_type_jobseeker,'jobseeker_education_objects':jobseeker_education_objects,'jobseeker_experience_objects':jobseeker_experience_objects,'jobseeker_skill_set_objects':jobseeker_skill_set_objects,'skill_set_objects':skill_set_objects,'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update})
+
+def job_post_select_candidate(request,id,username):
+    user_type_user = User_type.objects.get(user=request.user)
+    employer_basic_object,created= Employer_basic.objects.get_or_create(user=user_type_user)
+    need_update = 0  # this is for update profile notification
+    if created or employer_basic_object.description == 'none':
+        need_update = 1
+    job_post_object = Job_post.objects.get(pk=id)
+    #User_type Table Object
+    user_object = User.objects.get(username=username)
+    user_type_jobseeker = User_type.objects.get(user=user_object)
+    #Jobseeker_basic Table Object
+    jobseeker_basic_object = Jobseeker_basic.objects.get(user=user_type_jobseeker)
+    job_post_activity_object = Job_post_activity.objects.get(job_post_id=job_post_object,applied_by_id=jobseeker_basic_object)
+    job_post_activity_object.status ="selected"
+    job_post_activity_object.notification=True
+    job_post_activity_object.save()
+    return redirect(reverse('Employer:job_post_view_applications',kwargs={'id':id}))
+
+def job_post_reject_candidate(request,id,username):
+    user_type_user = User_type.objects.get(user=request.user)
+    employer_basic_object,created= Employer_basic.objects.get_or_create(user=user_type_user)
+    need_update = 0  # this is for update profile notification
+    if created or employer_basic_object.description == 'none':
+        need_update = 1
+    job_post_object = Job_post.objects.get(pk=id)
+    #User_type Table Object
+    user_object = User.objects.get(username=username)
+    user_type_jobseeker = User_type.objects.get(user=user_object)
+    #Jobseeker_basic Table Object
+    jobseeker_basic_object = Jobseeker_basic.objects.get(user=user_type_jobseeker)
+    job_post_activity_object = Job_post_activity.objects.get(job_post_id=job_post_object,applied_by_id=jobseeker_basic_object)
+    job_post_activity_object.status ="rejected"
+    job_post_activity_object.notification = True
+    job_post_activity_object.save()
+    return redirect(reverse('Employer:job_post_view_applications',kwargs={'id':id}))
+
+def employer_search(request):
+    user_type_user = User_type.objects.get(user=request.user)
+    employer_basic_object,created= Employer_basic.objects.get_or_create(user=user_type_user)
+    need_update = 0  # this is for update profile notification
+    if created or employer_basic_object.description == 'none':
+        need_update = 1
+    if request.method=="GET":
+        searchword = request.GET.get('searchword')
+        city = request.GET.get('city')
+        vector = SearchVector('jobseeker_skill_set__skill_set_id__skill_set_name', weight='A') + SearchVector('job_type_name', weight='B') + SearchVector('description', weight='C') + SearchVector('highest_education',weight='D')
+        query = SearchQuery(searchword)
+        candidates_old=Jobseeker_basic.objects.annotate(rank=SearchRank(vector, query)).filter(rank__gte=0.1).order_by('-rank').distinct()
+        new_city = city.replace(" ", "")
+        candidates=[]
+        if len(new_city)>2:
+            candidates = candidates_old.filter(user__current_city__icontains=city)
+        else:
+            candidates=candidates_old
+
+        #logic for paginator starts here
+        paginator = Paginator(candidates,9)
+        page = request.GET.get('page')
+        candidates = paginator.get_page(page)
+        return render(request,'Employer/employer_search_results.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'candidates':candidates,'paginator':paginator})
 
