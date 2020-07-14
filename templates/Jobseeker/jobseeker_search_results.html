@@ -6,7 +6,7 @@
 {%if final_list %}
 <div class="row employer_view_jobs_background">Search Results for {{searchword}} Jobs</div>
 {% else %}
-<div class="row employer_view_jobs_background">Sorry we could'nt find results for {{searchword}}</div>
+<div class="row employer_view_jobs_background">Sorry we could'nt find results for {{searchword}} jobs {% if city %}in {{city}} {% endif %}</div>
 {% endif %}
 
 <div class="container employer_view_jobs_container">
@@ -41,8 +41,10 @@
                     {% endif %}
                     {% if job_post.0.job_length == "Full Time" %}
                       <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Full Time</div>
-                    {% else %}
+                     {% elif job_post.0.job_length == "Intenship" %}
                       <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Internship</div>
+                     {% elif job_post.0.job_length == "Contract Based" %}
+                      <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>Contract Based</div>
                     {% endif %}
 
                     {% if job_post.1 %}
@@ -57,6 +59,8 @@
                 {% endif %}
                 <div class="row employer_view_jobs_container_item_action">
                     <div class="col s6 m3 l3 " data-position="top" data-tooltip="View & Apply"><a href="{% url 'Jobseeker:jobseeker_search_view_job' id=job_post.0.id %}" class="btn btn-small">View & Apply</a></div>
+                    <div  style=" margin-top:1rem;" class="col s12 m12 l12 " ><span>Posted {{job_post.0.updated_date|timesince }} ago</span></div>
+
                 </div>
             </div>
         </div>

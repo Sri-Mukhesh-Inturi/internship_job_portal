@@ -21,7 +21,7 @@
                   <div class="row">
                       <a class="btn capitalize" style="margin-bottom:1rem;margin-right:0.4rem;" href="{% url 'Employer:job_post_view_applications_full_profile' username=candidate.user.user.username %}">Full Profile</a>
                       {% if candidate.resume %}
-                      <a class="btn capitalize " style="margin-bottom:1rem;" href="{{candidate.resume.url}}" download>Download Resume</a>
+                      <a class="btn capitalize " style="margin-bottom:1rem;background-color:grey !important;" href="{{candidate.resume.url}}" download>Download Resume</a>
                       {% endif %}
                   </div>
 
@@ -32,8 +32,7 @@
                       <p class="margin_top_1"><b>Description:</b><br>{{candidate.description}}</p>
                       <p class="margin_top_1"><b>Highest Education:</b><br>{{candidate.highest_education}}</p>
                       <p class="margin_top_1"><b>Salary Expectations/Charges:</b><br>Rs.{{candidate.salary_expectation | intcomma}}</p>
-                      <p class="margin_top_1"><b>Phone number:</b>&nbsp;{{candidate.user.phone_number}}</p>
-                      {% if candidate.user.email %}
+                      {% if candidate.user.user.email %}
                        <p class="margin_top_1"><b>Email:</b>&nbsp;&nbsp;<a href="mailto:{{candidate.user.email}}">{{candidate.user.user.email}}</a></p>
                       {% endif %}
                   </div>

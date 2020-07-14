@@ -34,8 +34,10 @@
                     {% endif %}
                     {% if job_post.0.job_length == "Full Time" %}
                       <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Full Time</div>
-                    {% else %}
+                     {% elif job_post.0.job_length == "Intenship" %}
                       <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Internship</div>
+                     {% elif job_post.0.job_length == "Contract Based" %}
+                      <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>Contract Based</div>
                     {% endif %}
 
 

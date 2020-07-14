@@ -20,11 +20,17 @@ def employer_home(request):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
+    #for notification
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    notification=0
+    for object in job_post_objects:
+        if object.notification == True:
+            notification=1
     skill_set_objects = Skill_set.objects.all()
     skills = []
     for skill in skill_set_objects:
         skills.append(skill.skill_set_name)
-    return render(request, 'Employer/employer_index.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'skills':skills,'designations':new_job_categories,'cities':new_cities})
+    return render(request, 'Employer/employer_index.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'skills':skills,'designations':new_job_categories,'cities':new_cities,'notification':notification})
 
 
 def employer_profile(request):
@@ -34,8 +40,14 @@ def employer_profile(request):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
+    #for notification
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    notification=0
+    for object in job_post_objects:
+        if object.notification == True:
+            notification=1
     return render(request, 'Employer/employer_display_profile.html',
-                  {'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update})
+                  {'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'notification':notification})
 
 
 def employer_update_profile_basic(request):
@@ -44,6 +56,12 @@ def employer_update_profile_basic(request):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
+    #for notification
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    notification=0
+    for object in job_post_objects:
+        if object.notification == True:
+            notification=1
     # Company names list
     company_names = []
     all_company_objects = Company.objects.all()
@@ -124,7 +142,7 @@ def employer_update_profile_basic(request):
             basic_form = EmployerBasicForm(initial=my_dict)
     return render(request, 'Employer/employer_update_profile_basic.html',
                   {'employer_basic': employer_basic_object, 'user_type': user_type_user, 'need_update': 0,
-                   'basic_form': basic_form, 'company_names': company_names})
+                   'basic_form': basic_form, 'company_names': company_names,'notification':notification})
 
 
 def edit_company(request, company_name):
@@ -133,6 +151,12 @@ def edit_company(request, company_name):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
+    #for notification
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    notification=0
+    for object in job_post_objects:
+        if object.notification == True:
+            notification=1
     print('COMPANY name is ' + company_name)
     company_object = Company.objects.get(company_name=company_name)
     if request.method == "POST":
@@ -148,7 +172,7 @@ def edit_company(request, company_name):
         my_dict = {'company_description': company_object.company_description}
         basic_form = CompanyForm(initial=my_dict)
         return render(request, 'Employer/edit_company.html',
-                      {'need_update': 0, 'basic_form': basic_form, 'company_name': company_name})
+                      {'need_update': 0, 'basic_form': basic_form, 'company_name': company_name,'notification':notification})
 
 
 def employer_post_job(request, id):
@@ -157,6 +181,12 @@ def employer_post_job(request, id):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
+    #for notification
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    notification=0
+    for object in job_post_objects:
+        if object.notification == True:
+            notification=1
     job_post_form = JobPostForm()
     # Logic starts here
     if id > 0:
@@ -203,7 +233,7 @@ def employer_post_job(request, id):
             job_post_form = JobPostForm(initial=my_dict)
     return render(request, 'Employer/employer_post_job.html',
                   {'employer_basic': employer_basic_object, 'user_type': user_type_user, 'need_update': 0,
-                   'job_post_form': job_post_form, 'id': id})
+                   'job_post_form': job_post_form, 'id': id,'notification':notification})
 
 def employer_post_job_crud(request, operation, id):
     print('The operation is ' + operation + "  and id is " + str(id))
@@ -223,7 +253,13 @@ def employer_view_jobs(request):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
+    #for notification
     job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    notification=0
+    for object in job_post_objects:
+        if object.notification == True:
+            notification=1
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object).order_by('-pk')
     job_post_skills_objects_array = []
     for job_post_object in job_post_objects:
         job_post_skills_objects_array.append(Job_post_skill_set.objects.filter(job_post_id=job_post_object))
@@ -245,12 +281,11 @@ def employer_view_jobs(request):
     paginator = Paginator(final_list,5)
     page = request.GET.get('page')
     final_list = paginator.get_page(page)
-    return render(request,'Employer/employer_view_jobs.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'final_list':final_list,'paginator':paginator})
+    return render(request,'Employer/employer_view_jobs.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'final_list':final_list,'paginator':paginator,'notification':notification})
 
 def toggle_job_post_activity(request,id):
     job_post_object = Job_post.objects.get(pk=id)
     if job_post_object.is_active:
-        print('hello there')
         job_post_object.is_active = False
         job_post_object.save()
     else:
@@ -264,6 +299,12 @@ def employer_view_job(request,id):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
+    #for notification
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    notification=0
+    for object in job_post_objects:
+        if object.notification == True:
+            notification=1
     job_post_object = Job_post.objects.get(pk=id)
     job_post_skill_set_objects = Job_post_skill_set.objects.filter(job_post_id=job_post_object)
     skill_set_array =[]
@@ -272,7 +313,7 @@ def employer_view_job(request,id):
             skill_set_array.append(object.skill_set_id.skill_set_name)
     job_post = (job_post_object,skill_set_array)
     desc_list = job_post_object.job_description.split(".")
-    return render(request,'Employer/employer_view_job.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'job_post':job_post,'desc_list':desc_list})
+    return render(request,'Employer/employer_view_job.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'job_post':job_post,'desc_list':desc_list,'notification':notification})
 
 def job_post_update_skill_set(request,operation,id,name):
     user_type_user = User_type.objects.get(user=request.user)
@@ -280,6 +321,12 @@ def job_post_update_skill_set(request,operation,id,name):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
+    #for notification
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    notification=0
+    for object in job_post_objects:
+        if object.notification == True:
+            notification=1
     #skill set objects skill array containing all the skill set names as list items used in the autocomplete javascript function
     skill_set_objects = Skill_set.objects.all()
     skills = []
@@ -307,7 +354,7 @@ def job_post_update_skill_set(request,operation,id,name):
         return redirect(reverse('Employer:employer_view_job',kwargs={'id':id}))
     elif operation == 'new':
         skill_set_form = JobPostSkillSetForm
-        return render(request,'Employer/job_post_update_skill_set.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'operation':operation,'id':id,'name':name,'skills':skills,'skill_set_form':skill_set_form})
+        return render(request,'Employer/job_post_update_skill_set.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'operation':operation,'id':id,'name':name,'skills':skills,'skill_set_form':skill_set_form,'notification':notification})
 
 def job_post_view_applications(request,id):
     user_type_user = User_type.objects.get(user=request.user)
@@ -315,13 +362,22 @@ def job_post_view_applications(request,id):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
+
     job_post_object = Job_post.objects.get(pk=id)
+    job_post_object.notification=False
+    job_post_object.save()
+    #for notification
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    notification=0
+    for object in job_post_objects:
+        if object.notification == True:
+            notification=1
     job_post_activity_objects = Job_post_activity.objects.filter(job_post_id=job_post_object).exclude(status='rejected').order_by('-pk')
     #logic for paginator starts here
     paginator = Paginator(job_post_activity_objects,9)
     page = request.GET.get('page')
     job_post_activity_objects = paginator.get_page(page)
-    return render(request,'Employer/job_post_view_applications.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'applications':job_post_activity_objects,'paginator':paginator})
+    return render(request,'Employer/job_post_view_applications.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'applications':job_post_activity_objects,'paginator':paginator,'notification':notification})
 
 def job_post_view_applications_full_profile(request,username):
     user_type_user = User_type.objects.get(user=request.user)
@@ -329,6 +385,12 @@ def job_post_view_applications_full_profile(request,username):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
+    #for notification
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    notification=0
+    for object in job_post_objects:
+        if object.notification == True:
+            notification=1
     #User_type Table Object
     user_object = User.objects.get(username=username)
     user_type_jobseeker = User_type.objects.get(user=user_object)
@@ -342,7 +404,7 @@ def job_post_view_applications_full_profile(request,username):
     jobseeker_skill_set_objects = Jobseeker_skill_set.objects.filter(user=jobseeker_basic_object)
     #Skillset objects
     skill_set_objects = Skill_set.objects.all()
-    return render(request,'Employer/job_post_view_applications_full_profile.html',{'jobseeker_basic':jobseeker_basic_object,'user_type_jobseeker':user_type_jobseeker,'jobseeker_education_objects':jobseeker_education_objects,'jobseeker_experience_objects':jobseeker_experience_objects,'jobseeker_skill_set_objects':jobseeker_skill_set_objects,'skill_set_objects':skill_set_objects,'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update})
+    return render(request,'Employer/job_post_view_applications_full_profile.html',{'jobseeker_basic':jobseeker_basic_object,'user_type_jobseeker':user_type_jobseeker,'jobseeker_education_objects':jobseeker_education_objects,'jobseeker_experience_objects':jobseeker_experience_objects,'jobseeker_skill_set_objects':jobseeker_skill_set_objects,'skill_set_objects':skill_set_objects,'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'notification':notification})
 
 def job_post_select_candidate(request,id,username):
     user_type_user = User_type.objects.get(user=request.user)
@@ -386,6 +448,12 @@ def employer_search(request):
     need_update = 0  # this is for update profile notification
     if created or employer_basic_object.description == 'none':
         need_update = 1
+    #for notification
+    job_post_objects = Job_post.objects.filter(posted_by_id=employer_basic_object)
+    notification=0
+    for object in job_post_objects:
+        if object.notification == True:
+            notification=1
     if request.method=="GET":
         searchword = request.GET.get('searchword')
         city = request.GET.get('city')
@@ -403,5 +471,5 @@ def employer_search(request):
         paginator = Paginator(candidates,9)
         page = request.GET.get('page')
         candidates = paginator.get_page(page)
-        return render(request,'Employer/employer_search_results.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'candidates':candidates,'paginator':paginator})
+        return render(request,'Employer/employer_search_results.html',{'user_type': user_type_user, 'employer_basic': employer_basic_object, 'need_update': need_update,'candidates':candidates,'paginator':paginator,'notification':notification})
 

@@ -36,8 +36,10 @@
                     {% endif %}
                     {% if job_post.0.job_length == "Full Time" %}
                       <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Full Time</div>
-                    {% else %}
+                    {% elif job_post.0.job_length == "Intenship" %}
                       <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Internship</div>
+                     {% elif job_post.0.job_length == "Contract Based" %}
+                      <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>Contract Based</div>
                     {% endif %}
 
                     {% if job_post.1 %}
@@ -54,15 +56,16 @@
                     <div class="col s6 m3 l3 tooltipped" data-position="top" data-tooltip="View more information"><a href="{% url 'Employer:employer_view_job' id=job_post.0.id %}" class="btn btn-small">View Job</a></div>
                     {% if job_post.0.is_active %}
 <!--                        <div class="col s10 m3 l2" style="transform:translateY(30%);margin-bottom:0.7rem;">Status&nbsp;:&nbsp;<span class="green-text">active</span></div>-->
-                         <div class="col s6 m3 l3 " style="margin-bottom:1rem;"><a href="{% url 'Employer:toggle_job_post_activity' id=job_post.0.id %}" class="btn btn-small tooltipped" data-position="top" data-tooltip="you will stop receiving applications">Deactivate Post</a></div>
+                         <div class="col s6 m3 l3 " style="margin-bottom:1rem;"><a style="background-color:grey !important;" href="{% url 'Employer:toggle_job_post_activity' id=job_post.0.id %}" class="btn btn-small tooltipped" data-position="top" data-tooltip="you will stop receiving applications">Deactivate Post</a></div>
                     {% else %}
-                        <div class="col s6 m3 l3 "style="margin-bottom:1rem;"><a href="{% url 'Employer:toggle_job_post_activity' id=job_post.0.id %}" class="btn btn-small tooltipped" data-position="top" data-tooltip="you will start receiving applications">Activate Post</a></div>
+                        <div class="col s6 m3 l3 "style="margin-bottom:1rem;"><a  href="{% url 'Employer:toggle_job_post_activity' id=job_post.0.id %}" class="btn btn-small tooltipped" data-position="top" data-tooltip="you will start receiving applications">Activate Post</a></div>
 <!--                    <div class="col s10 m3 l2">Status&nbsp;:&nbsp;<span class="cyan-text">inactive</span></div>-->
                     {% endif %}
 
                      <div class="col s3 m2 offset-m1 l2" style="margin-bottom:1rem;"><a href="{% url 'Employer:post_job_crud' operation='edit' id=job_post.0.id %}" class="btn btn-floating btn-small tooltipped" data-position="top" data-tooltip="edit post"><i class="material-icons tiny cyan">edit</i></a></div>
                      <div class="col s3 m2 l2"><a href="{% url 'Employer:post_job_crud' operation='delete' id=job_post.0.id %}" class="btn btn-floating btn-small tooltipped" data-position="top" data-tooltip="delete post"><i class="material-icons tiny pink lighten-1">delete</i></a></div>
-                    <div class="col s12 m12 l12 " ><a href="{% url 'Employer:job_post_view_applications' id=job_post.0.id %}" class="btn btn-small tooltipped" data-position="top" data-tooltip="View Applied Candidates">View Applications</a></div>
+                    <div  style="margin-bottom:1rem;" class="col s12 m12 l12 " ><a href="{% url 'Employer:job_post_view_applications' id=job_post.0.id %}" class="btn btn-small tooltipped" data-position="top" data-tooltip="View Applied Candidates">View Applications{% if job_post.0.notification %}<span class="btn-floating pulse new badge blue" style="transform:translateY(20%);"></span>{% endif %}</a></div>
+           <div class="col s12 m12 l12 " >Posted {{job_post.0.updated_date|timesince }} ago</div>
 
                 </div>
             </div>

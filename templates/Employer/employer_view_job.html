@@ -34,8 +34,10 @@
                     {% endif %}
                     {% if job_post.0.job_length == "Full Time" %}
                       <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Full Time</div>
-                    {% else %}
+                     {% elif job_post.0.job_length == "Intenship" %}
                       <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Internship</div>
+                     {% elif job_post.0.job_length == "Contract Based" %}
+                      <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>Contract Based</div>
                     {% endif %}
                          <div class="divider col s6 offset-s2 m8 offset-m1 l10 green margin_top_1"></div>
 
@@ -58,6 +60,7 @@
 
                      <div class="col s3 m2 offset-m1 l2"><a href="{% url 'Employer:post_job_crud' operation='edit' id=job_post.0.id %}" class="btn btn-floating btn-small tooltipped" data-position="top" data-tooltip="edit post"><i class="material-icons tiny cyan">edit</i></a></div>
                      <div class="col s3 m2 l2"><a href="{% url 'Employer:post_job_crud' operation='delete' id=job_post.0.id %}" class="btn btn-floating btn-small tooltipped" data-position="top" data-tooltip="delete post"><i class="material-icons tiny pink lighten-1">delete</i></a></div>
+                               <div class="col s12 m12 l12 " >Posted {{job_post.0.updated_date|timesince }} ago</div>
 
                 </div>
             </div>

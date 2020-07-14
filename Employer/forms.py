@@ -58,7 +58,7 @@ class JobPostForm(forms.ModelForm):
             'min_experience':None,
         }
     job_type_name = forms.ChoiceField(choices=new_job_categories_1 ,widget=forms.Select)
-    job_length = forms.ChoiceField(choices=(('Not Selected', 'Not Selected'), ('Internship', 'Internship'), ('Full Time', 'Full Time')),widget=forms.Select)
+    job_length = forms.ChoiceField(choices=(('Not Selected', 'Not Selected'), ('Internship', 'Internship'), ('Full Time', 'Full Time'),('Contract Based', 'Contract Based')),widget=forms.Select)
     city = forms.ChoiceField(choices=new_city_1,widget=forms.Select)
 
     def clean(self):

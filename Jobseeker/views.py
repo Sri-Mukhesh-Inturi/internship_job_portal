@@ -25,7 +25,13 @@ def jobseeker_home(request):
     skills = []
     for skill in skill_set_objects:
         skills.append(skill.skill_set_name)
-    return render(request,'Jobseeker/jobseeker_index.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'need_update':need_update,'skills':skills,'designations':new_job_categories,'cities':new_cities})
+    #for notifications
+    notification=0
+    job_post_activity_objects = Job_post_activity.objects.filter(applied_by_id=jobseeker_basic_object).order_by('-pk')
+    for object in job_post_activity_objects:
+        if object.notification == True:
+            notification=1
+    return render(request,'Jobseeker/jobseeker_index.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'need_update':need_update,'skills':skills,'designations':new_job_categories,'cities':new_cities,'notification':notification})
 
 def jobseeker_profile(request):
     #User_type Table Object
@@ -35,6 +41,12 @@ def jobseeker_profile(request):
     need_update = 0 #this is for update profile notification
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
+    #for notifications
+    notification=0
+    job_post_activity_objects = Job_post_activity.objects.filter(applied_by_id=jobseeker_basic_object).order_by('-pk')
+    for object in job_post_activity_objects:
+        if object.notification == True:
+            notification=1
     #Jobseeker Educational details
     jobseeker_education_objects = Jobseeker_education.objects.filter(user=jobseeker_basic_object)
     #Jobseeker Work Experience Details
@@ -43,7 +55,7 @@ def jobseeker_profile(request):
     jobseeker_skill_set_objects = Jobseeker_skill_set.objects.filter(user=jobseeker_basic_object)
     #Skillset objects
     skill_set_objects = Skill_set.objects.all()
-    return render(request,'Jobseeker/jobseeker_display_profile.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'need_update':need_update,'jobseeker_education_objects':jobseeker_education_objects,'jobseeker_experience_objects':jobseeker_experience_objects,'jobseeker_skill_set_objects':jobseeker_skill_set_objects,'skill_set_objects':skill_set_objects})
+    return render(request,'Jobseeker/jobseeker_display_profile.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'need_update':need_update,'jobseeker_education_objects':jobseeker_education_objects,'jobseeker_experience_objects':jobseeker_experience_objects,'jobseeker_skill_set_objects':jobseeker_skill_set_objects,'skill_set_objects':skill_set_objects,'notification':notification})
 
 def jobseeker_update_profile_basic(request):
     #User_type Table Object
@@ -53,6 +65,12 @@ def jobseeker_update_profile_basic(request):
     need_update = 0 #this is for update profile notification
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
+    #for notifications
+    notification=0
+    job_post_activity_objects = Job_post_activity.objects.filter(applied_by_id=jobseeker_basic_object).order_by('-pk')
+    for object in job_post_activity_objects:
+        if object.notification == True:
+            notification=1
      #Logic starts here
     if request.method=="POST":
         basic_form=JobseekerBasicForm(request.POST,request.FILES)
@@ -98,7 +116,7 @@ def jobseeker_update_profile_basic(request):
                            'phone_number': user_type_user.phone_number}
 
             basic_form = JobseekerBasicForm(initial=my_dict)
-    return render(request,'Jobseeker/jobseeker_update_profile_basic.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'need_update':0,'basic_form':basic_form,'id':id})
+    return render(request,'Jobseeker/jobseeker_update_profile_basic.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'need_update':0,'basic_form':basic_form,'id':id,'notification':notification})
 
 
 
@@ -110,6 +128,12 @@ def jobseeker_update_education(request,id):
     need_update = 0  # this is for update profile notification
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
+    #for notifications
+    notification=0
+    job_post_activity_objects = Job_post_activity.objects.filter(applied_by_id=jobseeker_basic_object).order_by('-pk')
+    for object in job_post_activity_objects:
+        if object.notification == True:
+            notification=1
     # Logic starts here
     if id>0:
         target_object = Jobseeker_education.objects.get(pk=id)
@@ -143,7 +167,7 @@ def jobseeker_update_education(request,id):
         else:
             my_dict = {'degree_type':target_object.degree_type,'degree_name':target_object.degree_name,'institute':target_object.institute,'cgpa':target_object.cgpa,'start_date':target_object.start_date,'end_date':target_object.end_date}
             education_form = JobseekerEducationForm(initial=my_dict)
-    return render(request,'Jobseeker/jobseeker_update_education.html',{'jobseeker_basic': jobseeker_basic_object, 'user_type': user_type_user, 'need_update': 0,'education_form': education_form,'id':id})
+    return render(request,'Jobseeker/jobseeker_update_education.html',{'jobseeker_basic': jobseeker_basic_object, 'user_type': user_type_user, 'need_update': 0,'education_form': education_form,'id':id,'notification':notification})
 
 
 def jobseeker_update_education_crud(request,operation,id):
@@ -169,6 +193,12 @@ def jobseeker_update_experience(request, id):
     need_update = 0  # this is for update profile notification
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
+    #for notifications
+    notification=0
+    job_post_activity_objects = Job_post_activity.objects.filter(applied_by_id=jobseeker_basic_object).order_by('-pk')
+    for object in job_post_activity_objects:
+        if object.notification == True:
+            notification=1
     # Logic starts here
     if id > 0:
         target_object = Jobseeker_experience.objects.get(pk=id)
@@ -207,7 +237,7 @@ def jobseeker_update_experience(request, id):
             experience_form = JobseekerExperienceForm(initial=my_dict)
     return render(request, 'Jobseeker/jobseeker_update_experience.html',
                   {'jobseeker_basic': jobseeker_basic_object, 'user_type': user_type_user, 'need_update': 0,
-                   'experience_form': experience_form, 'id': id})
+                   'experience_form': experience_form, 'id': id,'notification':notification})
 
 
 def jobseeker_update_experience_crud(request, operation, id):
@@ -230,6 +260,12 @@ def jobseeker_update_skill_set(request, id):
     need_update = 0  # this is for update profile notification
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
+    #for notifications
+    notification=0
+    job_post_activity_objects = Job_post_activity.objects.filter(applied_by_id=jobseeker_basic_object).order_by('-pk')
+    for object in job_post_activity_objects:
+        if object.notification == True:
+            notification=1
     #skill set objects skill array containing all the skill set names as list items used in the autocomplete javascript function
     skill_set_objects = Skill_set.objects.all()
     skills = []
@@ -259,7 +295,7 @@ def jobseeker_update_skill_set(request, id):
             skill_set_form = JobseekerSkillSetForm()
     return render(request, 'Jobseeker/jobseeker_update_skill_set.html',
                   {'skills':skills,'jobseeker_basic': jobseeker_basic_object, 'user_type': user_type_user, 'need_update': 0,
-                   'skill_set_form': skill_set_form, 'id': id})
+                   'skill_set_form': skill_set_form, 'id': id,'notification':notification})
 
 
 def jobseeker_update_skill_set_crud(request, operation, id):
@@ -280,6 +316,12 @@ def jobseeker_search(request):
     need_update = 0  # this is for update profile notification
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
+    #for notifications
+    notification=0
+    job_post_activity_objects = Job_post_activity.objects.filter(applied_by_id=jobseeker_basic_object).order_by('-pk')
+    for object in job_post_activity_objects:
+        if object.notification == True:
+            notification=1
     if request.method=="GET":
         searchword = request.GET.get('searchword')
         city = request.GET.get('city')
@@ -328,7 +370,7 @@ def jobseeker_search(request):
         paginator = Paginator(final_list,5)
         page = request.GET.get('page')
         final_list = paginator.get_page(page)
-        return render(request,'Jobseeker/jobseeker_search_results.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'need_update':need_update,'final_list':final_list,'paginator':paginator,'searchword':searchword,'city':city})
+        return render(request,'Jobseeker/jobseeker_search_results.html',{'jobseeker_basic':jobseeker_basic_object,'user_type':user_type_user,'need_update':need_update,'final_list':final_list,'paginator':paginator,'searchword':searchword,'city':city,'notification':notification})
 
 def jobseeker_search_view_job(request,id):
     # User_type Table Object
@@ -338,6 +380,12 @@ def jobseeker_search_view_job(request,id):
     need_update = 0  # this is for update profile notification
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
+    #for notifications
+    notification=0
+    job_post_activity_objects = Job_post_activity.objects.filter(applied_by_id=jobseeker_basic_object).order_by('-pk')
+    for object in job_post_activity_objects:
+        if object.notification == True:
+            notification=1
     job_post_object = Job_post.objects.get(pk=id)
     job_post_skill_set_objects = Job_post_skill_set.objects.filter(job_post_id=job_post_object)
     skill_set_array =[]
@@ -346,7 +394,7 @@ def jobseeker_search_view_job(request,id):
             skill_set_array.append(object.skill_set_id.skill_set_name)
     job_post = (job_post_object,skill_set_array)
     desc_list = job_post_object.job_description.split(".")
-    return render(request,'Jobseeker/jobseeker_search_view_job.html',{'user_type': user_type_user, 'jobseeker_basic': jobseeker_basic_object, 'need_update': need_update,'job_post':job_post,'desc_list':desc_list})
+    return render(request,'Jobseeker/jobseeker_search_view_job.html',{'user_type': user_type_user, 'jobseeker_basic': jobseeker_basic_object, 'need_update': need_update,'job_post':job_post,'desc_list':desc_list,'notification':notification})
 
 def jobseeker_apply_job(request,id):
     # User_type Table Object
@@ -359,6 +407,7 @@ def jobseeker_apply_job(request,id):
         return redirect(reverse('Jobseeker:jobseeker_profile'))
     job_post_object = Job_post.objects.get(pk=id)
     job_post_object.notification =True
+    job_post_object.save()
     application_object = Job_post_activity.objects.create(job_post_id=job_post_object,applied_by_id=jobseeker_basic_object)
     application_object.save()
     return redirect(reverse('Jobseeker:jobseeker_view_jobs'))
@@ -376,7 +425,12 @@ def jobseeker_view_jobs(request):
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
         return redirect(reverse('Jobseeker:jobseeker_profile'))
+    #for notifications
+    notification=0
     job_post_activity_objects = Job_post_activity.objects.filter(applied_by_id=jobseeker_basic_object).order_by('-pk')
+    for object in job_post_activity_objects:
+        object.notification=False
+        object.save()
     job_post_objects=[]
     status_dict ={}
     for obj in job_post_activity_objects:
@@ -404,7 +458,7 @@ def jobseeker_view_jobs(request):
     paginator = Paginator(final_list,5)
     page = request.GET.get('page')
     final_list = paginator.get_page(page)
-    return render(request,'Jobseeker/jobseeker_view_jobs.html',{'user_type': user_type_user,'jobseeker_basic': jobseeker_basic_object, 'need_update': need_update,'final_list':final_list,'paginator':paginator,'status_dict':status_dict})
+    return render(request,'Jobseeker/jobseeker_view_jobs.html',{'user_type': user_type_user,'jobseeker_basic': jobseeker_basic_object, 'need_update': need_update,'final_list':final_list,'paginator':paginator,'status_dict':status_dict,'notification':notification})
 
 def jobseeker_view_job(request,id):
     # User_type Table Object
@@ -414,6 +468,12 @@ def jobseeker_view_job(request,id):
     need_update = 0  # this is for update profile notification
     if created or jobseeker_basic_object.highest_education == 'none' or jobseeker_basic_object.job_type_name == 'none':
         need_update = 1
+    #for notifications
+    notification=0
+    job_post_activity_objects = Job_post_activity.objects.filter(applied_by_id=jobseeker_basic_object).order_by('-pk')
+    for object in job_post_activity_objects:
+        if object.notification == True:
+            notification=1
     job_post_object = Job_post.objects.get(pk=id)
     job_post_activity_object = Job_post_activity.objects.get(applied_by_id=jobseeker_basic_object,job_post_id=job_post_object)
     status= job_post_activity_object.status
@@ -424,7 +484,7 @@ def jobseeker_view_job(request,id):
             skill_set_array.append(object.skill_set_id.skill_set_name)
     job_post = (job_post_object,skill_set_array)
     desc_list = job_post_object.job_description.split(".")
-    return render(request,'Jobseeker/jobseeker_view_job.html',{'user_type': user_type_user, 'jobseeker_basic': jobseeker_basic_object, 'need_update': need_update,'job_post':job_post,'desc_list':desc_list,'status':status})
+    return render(request,'Jobseeker/jobseeker_view_job.html',{'user_type': user_type_user, 'jobseeker_basic': jobseeker_basic_object, 'need_update': need_update,'job_post':job_post,'desc_list':desc_list,'status':status,'notification':notification})
 
 def jobseeker_cancel_application(request,id):
     # User_type Table Object
@@ -437,6 +497,7 @@ def jobseeker_cancel_application(request,id):
         return redirect(reverse('Jobseeker:jobseeker_profile'))
     job_post_object = Job_post.objects.get(pk=id)
     job_post_object.notification=False
+    job_post_object.save()
     application_object = Job_post_activity.objects.get(job_post_id=job_post_object,applied_by_id=jobseeker_basic_object)
     application_object.delete()
     return redirect(reverse('Jobseeker:jobseeker_view_jobs'))

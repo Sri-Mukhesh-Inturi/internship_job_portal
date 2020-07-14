@@ -40,8 +40,10 @@
                     {% endif %}
                     {% if job_post.0.job_length == "Full Time" %}
                       <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Full Time</div>
-                    {% else %}
+                     {% elif job_post.0.job_length == "Intenship" %}
                       <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>&nbsp;Internship</div>
+                     {% elif job_post.0.job_length == "Contract Based" %}
+                      <div class="col s10 m10 l10"><i class="material-icons tiny">hourglass_full</i>Contract Based</div>
                     {% endif %}
 
                     {% if job_post.1 %}
@@ -56,9 +58,9 @@
                 {% endif %}
                 <div class="row employer_view_jobs_container_item_action">
                     <div style="margin-bottom:1rem;" class="col s6 m3 l3 " data-position="top" data-tooltip="View"><a href="{% url 'Jobseeker:jobseeker_view_job' id=job_post.0.id %}" class="btn btn-small">View</a></div>
-                    <div class="col s6 m3 l3 ">Status&nbsp;:&nbsp;<span class="capitalize">{{ status_dict|get_item:job_post.0 }}</span></div>
+                    <div style="background-color: #fff2ac;background-image: linear-gradient(to right, #ffe359 0%, #fff2ac 100%);" class="col s6 m3 l3 ">Status&nbsp;:&nbsp;<span class="capitalize">{{ status_dict|get_item:job_post.0 }}</span></div>
                     {% if status_dict|get_item:job_post.0 == 'pending'  %}<div class="col s12 m12 l6 " data-position="top" data-tooltip="Cancel Application"><a href="{% url 'Jobseeker:jobseeker_cancel_application' id=job_post.0.id %}" class="btn btn-small">Cancel Application</a></div>{% endif %}
-
+              
                 </div>
             </div>
         </div>

@@ -3,7 +3,11 @@
 {% load humanize %}
 {% block title %} My Jobs {% endblock %}
 {% block content %}
+{% if applications %}
 <div class="row employer_view_jobs_background">Candidates Applied</div>
+{% else %}
+<div class="row employer_view_jobs_background">No Candidates Applied Till Now</div>
+{% endif %}
 <div class="container employer_view_jobs_container">
 
 
@@ -16,18 +20,18 @@
                   <img class="activator img-responsive tooltipped" data-position="top" data-tooltip="Click to see more details" src="{{application.applied_by_id.profile_picture.url}}">
                 </div>
 
-                <div class="card-content">
+                <div class="card-content" style="overflow:visible;">
                   <span class="card-title activator capitalize grey-text text-darken-4">{{application.applied_by_id.user.user.first_name}}&nbsp;{{application.applied_by_id.user.user.last_name}}<i class="material-icons right">more_vert</i></span>
                   <div class="row">
                       <a class="btn capitalize" style="margin-bottom:1rem;margin-right:0.4rem;" href="{% url 'Employer:job_post_view_applications_full_profile' username=application.applied_by_id.user.user.username %}">Full Profile</a>
                       {% if application.applied_by_id.resume %}
-                      <a class="btn capitalize " style="margin-bottom:1rem;" href="{{application.applied_by_id.resume.url}}" download>Download Resume</a>
+                      <a class="btn capitalize " style="margin-bottom:1rem;background-color:grey !important;" href="{{application.applied_by_id.resume.url}}" download>Download Resume</a>
                       {% endif %}
                   </div>
-                    <div class="row">
+                    <div class="row" style="overflow:visible;" >
                         {% if application.status == 'pending' %}
                         <a class="btn capitalize tooltipped green" data-position="top" data-tooltip="Select Candidate" style="margin-bottom:1rem;margin-right:0.4rem;" href="{% url 'Employer:job_post_select_candidate' id=application.job_post_id.id username=application.applied_by_id.user.user.username %}">Select</a>
-                       <a class="btn capitalize tooltipped red" data-position="top" data-tooltip="Reject Candidate" style="margin-bottom:1rem;margin-right:0.4rem;" href="{% url 'Employer:job_post_reject_candidate' id=application.job_post_id.id username=application.applied_by_id.user.user.username %}">Reject</a>
+                       <a class="btn capitalize tooltipped" style="background-color:#ec407a !important;transform:translateY(-20%);" data-position="top" data-tooltip="Reject Candidate" style="margin-bottom:1rem;margin-right:0.4rem;" href="{% url 'Employer:job_post_reject_candidate' id=application.job_post_id.id username=application.applied_by_id.user.user.username %}">Reject</a>
                         {% elif application.status == 'selected' %}
                             Selected
 
@@ -43,7 +47,7 @@
                       <p class="margin_top_1"><b>Highest Education:</b><br>{{application.applied_by_id.highest_education}}</p>
                       <p class="margin_top_1"><b>Salary Expectations/Charges:</b><br>Rs.{{application.applied_by_id.salary_expectation | intcomma}}</p>
                       <p class="margin_top_1"><b>Phone number:</b>&nbsp;{{application.applied_by_id.user.phone_number}}</p>
-                      {% if application.applied_by_id.user.email %}
+                      {% if application.applied_by_id.user.user.email %}
                        <p class="margin_top_1"><b>Email:</b>&nbsp;&nbsp;<a href="mailto:{{application.applied_by_id.user.email}}">{{application.applied_by_id.user.user.email}}</a></p>
                       {% endif %}
                   </div>
